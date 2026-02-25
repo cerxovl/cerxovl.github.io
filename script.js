@@ -14,8 +14,77 @@
     setTimeout(() => {
       preloader?.classList.add("is-hidden");
       revealAll();
+
+      // Intro (once per session, and skip for reduced motion)
+      try {
+        const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const played = sessionStorage.getItem("introPlayed") === "1";
+        if (!reduce && !played) {
+          sessionStorage.setItem("introPlayed", "1");
+          document.body.classList.add("is-intro");
+          window.setTimeout(() => document.body.classList.remove("is-intro"), 1500);
+        }
+      } catch {
+        // ignore
+      }
     }, 350);
   });
+
+  // Theme toggle
+  const themeToggle = $("#themeToggle");
+  const themeText = $("#themeText");
+  const themes = ["dark", "ultra", "minimal"];
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function applyTheme(theme) {
+    const t = themes.includes(theme) ? theme : "dark";
+    document.documentElement.dataset.theme = t;
+    try {
+      localStorage.setItem("theme", t);
+    } catch {
+      // ignore
+    }
+    if (themeToggle) {
+      themeToggle.dataset.theme = t;
+      themeToggle.setAttribute("aria-label", `Сменить тему (сейчас: ${t})`);
+    }
+    if (themeText) {
+      themeText.textContent = t === "dark" ? "Dark" : (t === "ultra" ? "Ultra" : "Minimal");
+    }
+  }
+
+  (() => {
+    let saved = "";
+    try {
+      saved = localStorage.getItem("theme") || "";
+    } catch {
+      // ignore
+    }
+    if (!saved) {
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      applyTheme(prefersDark ? "dark" : "minimal");
+    } else {
+      applyTheme(saved);
+    }
+  })();
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const current = document.documentElement.dataset.theme || "dark";
+      const idx = themes.indexOf(current);
+      const next = themes[(idx + 1 + themes.length) % themes.length];
+      applyTheme(next);
+    });
+  }
+
+  // Service Worker (PWA-lite)
+  if (location.protocol !== "file:" && "serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js").catch(() => {
+        // ignore
+      });
+    });
+  }
 
   // Reveal on scroll
   const revealEls = $$('[data-reveal]');
@@ -53,11 +122,61 @@
     });
   });
 
+  const isCoarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+
+  // Magnetic buttons (desktop only)
+  if (!isCoarse && !reduceMotion) {
+    const magneticTargets = rippleTargets.filter((el) => el.classList?.contains("neon-btn"));
+    magneticTargets.forEach((el) => {
+      let mx = 0;
+      let my = 0;
+      let tmx = 0;
+      let tmy = 0;
+      let rafMag = 0;
+
+      const tick = () => {
+        mx += (tmx - mx) * 0.18;
+        my += (tmy - my) * 0.18;
+        el.style.setProperty("--mx", `${mx.toFixed(2)}px`);
+        el.style.setProperty("--my", `${my.toFixed(2)}px`);
+        const done = Math.abs(tmx - mx) < 0.05 && Math.abs(tmy - my) < 0.05;
+        if (!done) rafMag = requestAnimationFrame(tick);
+        else rafMag = 0;
+      };
+
+      el.addEventListener(
+        "pointermove",
+        (ev) => {
+          const r = el.getBoundingClientRect();
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const dx = (ev.clientX - cx) / (r.width / 2);
+          const dy = (ev.clientY - cy) / (r.height / 2);
+          const clamp = (v) => Math.max(-1, Math.min(1, v));
+          const kx = clamp(dx);
+          const ky = clamp(dy);
+          tmx = kx * 6;
+          tmy = ky * 5;
+          if (!rafMag) rafMag = requestAnimationFrame(tick);
+        },
+        { passive: true }
+      );
+
+      el.addEventListener(
+        "pointerleave",
+        () => {
+          tmx = 0;
+          tmy = 0;
+          if (!rafMag) rafMag = requestAnimationFrame(tick);
+        },
+        { passive: true }
+      );
+    });
+  }
+
   // Custom cursor (desktop only)
   const cursor = $("#cursor");
   let cursorVisible = false;
-
-  const isCoarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
   if (!isCoarse && cursor) {
     const move = (ev) => {
       cursor.style.left = `${ev.clientX}px`;
@@ -386,6 +505,44 @@
   let collapseTimer = 0;
 
   const isCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+
+  // Light parallax (desktop only)
+  if (!isCoarsePointer && !reduceMotion) {
+    let px = 0;
+    let py = 0;
+    let tpx = 0;
+    let tpy = 0;
+    let parRaf = 0;
+
+    const apply = () => {
+      px += (tpx - px) * 0.12;
+      py += (tpy - py) * 0.12;
+      document.documentElement.style.setProperty("--px", `${px.toFixed(2)}px`);
+      document.documentElement.style.setProperty("--py", `${py.toFixed(2)}px`);
+      parRaf = requestAnimationFrame(apply);
+    };
+
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        const nx = e.clientX / window.innerWidth - 0.5;
+        const ny = e.clientY / window.innerHeight - 0.5;
+        tpx = nx * 18;
+        tpy = ny * 14;
+        if (!parRaf) parRaf = requestAnimationFrame(apply);
+      },
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "pointerleave",
+      () => {
+        tpx = 0;
+        tpy = 0;
+      },
+      { passive: true }
+    );
+  }
 
   function fmtTimeMMSS(s) {
     if (!Number.isFinite(s) || s < 0) s = 0;
@@ -887,6 +1044,30 @@
 
       // Best-effort: open Discord (web). Direct "add friend" deep-link is not guaranteed without internal ID.
       window.open("https://discord.com/app", "_blank", "noopener,noreferrer");
+    });
+  }
+
+  // Easter egg: 5 taps on avatar
+  const avatarWrap = document.querySelector(".hero__avatar");
+  let eggClicks = 0;
+  let eggTimer = 0;
+  if (avatarWrap) {
+    avatarWrap.addEventListener("click", () => {
+      eggClicks += 1;
+      window.clearTimeout(eggTimer);
+      eggTimer = window.setTimeout(() => {
+        eggClicks = 0;
+      }, 1800);
+
+      if (eggClicks >= 5) {
+        eggClicks = 0;
+        showToast("Секрет активирован");
+        if (statusText && statusWrap) {
+          window.clearTimeout(statusTimer);
+          setStatus("Верхов на связи: секретный режим");
+          scheduleStatus();
+        }
+      }
     });
   }
 })();

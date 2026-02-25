@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#07070b" />
   <title>verxov — Portfolio</title>
+  <meta name="description" content="Cyberpunk neon one-page portfolio: verxov. Музыка, links, media player." />
+  <link rel="canonical" href="https://cerxovl.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="verxov" />
+  <meta property="og:title" content="verxov — Portfolio" />
+  <meta property="og:description" content="Cyberpunk neon one-page portfolio: verxov. Музыка, links, media player." />
+  <meta property="og:url" content="https://cerxovl.github.io/" />
+  <meta property="og:image" content="https://cerxovl.github.io/cover.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="verxov — Portfolio" />
+  <meta name="twitter:description" content="Cyberpunk neon one-page portfolio: verxov. Музыка, links, media player." />
+  <meta name="twitter:image" content="https://cerxovl.github.io/cover.jpg" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -16,7 +30,7 @@
 
   <!-- Background video -->
   <div class="bg" aria-hidden="true">
-    <video class="bg__video" autoplay muted loop playsinline preload="auto">
+    <video class="bg__video" autoplay muted loop playsinline preload="metadata" poster="cover.jpg">
       <!-- Легко заменить файл: просто поменяй background.mp4 -->
       <source src="background.mp4" type="video/mp4" />
     </video>
@@ -50,6 +64,16 @@
       </svg>
       <span class="icon-btn__text">Music</span>
     </button>
+
+    <button id="themeToggle" class="icon-btn" type="button" aria-label="Сменить тему" data-theme="dark">
+      <span class="icon-btn__glow" aria-hidden="true"></span>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="theme-icon theme-icon--dark" fill="currentColor" d="M21 14.5A7.5 7.5 0 0 1 9.5 3.1a1 1 0 0 1 1.1 1.6A5.5 5.5 0 1 0 19.3 13a1 1 0 0 1 1.7 1.5Z"/>
+        <path class="theme-icon theme-icon--ultra" fill="currentColor" d="M13 2 4 14h7l-1 8 10-14h-7l0-6Z"/>
+        <path class="theme-icon theme-icon--minimal" fill="currentColor" d="M5 7h14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2Zm0 4h10a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2Zm0 4h14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2Z"/>
+      </svg>
+      <span class="icon-btn__text" id="themeText">Dark</span>
+    </button>
   </header>
 
   <section id="mediaPlayer" class="media media--collapsed" aria-hidden="true">
@@ -64,6 +88,11 @@
       <div class="media__meta">
         <div class="media__title" id="mediaTitle">My Track</div>
         <div class="media__artist" id="mediaArtist">verxov</div>
+
+        <div class="media__live" id="mediaLive" aria-hidden="true">
+          <span class="media__liveDot" aria-hidden="true"></span>
+          <span class="media__liveText">LIVE</span>
+        </div>
 
         <div class="media__expanded">
           <div id="mediaProgress" class="media__progress" role="slider" aria-label="Прогресс" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
