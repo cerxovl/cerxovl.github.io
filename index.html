@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07070b" />
+  <title>verxov — Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader" class="preloader" aria-hidden="true">
+    <div class="preloader__ring" role="status" aria-label="Загрузка"></div>
+    <div class="preloader__text">loading</div>
+  </div>
+
+  <!-- Background video -->
+  <div class="bg" aria-hidden="true">
+    <video class="bg__video" autoplay muted loop playsinline preload="auto">
+      <!-- Легко заменить файл: просто поменяй background.mp4 -->
+      <source src="background.mp4" type="video/mp4" />
+    </video>
+    <div class="bg__overlay"></div>
+    <div class="bg__vignette"></div>
+    <canvas id="particles" class="bg__particles"></canvas>
+  </div>
+
+  <!-- Custom cursor -->
+  <div id="cursor" class="cursor" aria-hidden="true"></div>
+
+  <!-- Background music -->
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="music.m4a" type="audio/mp4" />
+    <source src="music.m4a" type="audio/x-m4a" />
+    <source src="music.m4a" />
+  </audio>
+
+  <!-- Top controls -->
+  <header class="topbar">
+    <div class="topbar__brand" aria-label="Логотип">
+      <span class="brand__dot"></span>
+      <span class="brand__text">verxov</span>
+    </div>
+
+    <button id="musicToggle" class="icon-btn" type="button" aria-label="Включить музыку" data-state="off">
+      <span class="icon-btn__glow" aria-hidden="true"></span>
+      <!-- Inline SVG icon (no libraries) -->
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M10 9v6a3 3 0 1 1-2-2.83V7.5a1 1 0 0 1 .77-.97l9-2A1 1 0 0 1 19 5.5V14a3 3 0 1 1-2-2.83V6.74l-7 1.56z" fill="currentColor"/>
+      </svg>
+      <span class="icon-btn__text">Music</span>
+    </button>
+  </header>
+
+  <section id="mediaPlayer" class="media media--collapsed" aria-hidden="true">
+    <div class="media__island" role="group" aria-label="Media Player">
+      <div class="media__vinyl" aria-hidden="true">
+        <span class="media__vinylGlow" aria-hidden="true"></span>
+        <span class="media__vinylRings" aria-hidden="true"></span>
+        <span class="media__vinylLabel" aria-hidden="true"></span>
+        <img class="media__cover" src="cover.jpg" alt="Обложка трека" draggable="false" />
+      </div>
+
+      <div class="media__meta">
+        <div class="media__title" id="mediaTitle">My Track</div>
+        <div class="media__artist" id="mediaArtist">verxov</div>
+
+        <div class="media__expanded">
+          <div id="mediaProgress" class="media__progress" role="slider" aria-label="Прогресс" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+            <div id="mediaProgressFill" class="media__progressFill"></div>
+            <div id="mediaProgressDot" class="media__progressDot" aria-hidden="true"></div>
+          </div>
+
+          <div class="media__wave" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="media__row">
+            <div class="media__time" id="mediaTime">00:00</div>
+          </div>
+        </div>
+      </div>
+
+      <button id="mediaPlay" class="media__play" type="button" aria-label="Play/Pause" data-state="play">
+        <span class="media__playGlow" aria-hidden="true"></span>
+        <svg class="icon media__iconPlay" viewBox="0 0 24 24" aria-hidden="true" data-icon="play">
+          <path fill="currentColor" d="M8 5v14l12-7-12-7Z"/>
+        </svg>
+        <svg class="icon media__iconPause" viewBox="0 0 24 24" aria-hidden="true" data-icon="pause">
+          <path fill="currentColor" d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <main class="wrap">
+    <section class="hero reveal" data-reveal>
+      <div class="hero__avatar" data-hover-glow>
+        <!-- Аватар: avatar.jpg -->
+        <img src="avatar.jpg" alt="Аватар" class="avatar" draggable="false" />
+        <span class="avatar__ring" aria-hidden="true"></span>
+      </div>
+
+      <h1 class="hero__name">verxov</h1>
+      <div class="status" aria-live="polite" aria-atomic="true">
+        <span id="statusText" class="status__text">Верхов в сети</span>
+        <span class="status__shimmer" aria-hidden="true"></span>
+      </div>
+
+      <div class="hero__actions">
+        <a class="neon-btn reveal" data-reveal href="https://t.me/verysox" target="_blank" rel="noreferrer" data-ripple>
+          <span class="neon-btn__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M21.8 4.6 2.9 12.2c-1.3.5-1.3 1.2-.2 1.6l4.7 1.5 1.8 5.5c.2.6.1.8.7.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.2-.4-1.7-1.2-1.3Zm-4 4.1-8.9 8.1c-.3.3-.6.2-.4-.2l7.4-9.4c.5-.6 1-.3.7.3Z"/>
+            </svg>
+          </span>
+          <span>Telegram</span>
+          <span class="neon-btn__shine" aria-hidden="true"></span>
+        </a>
+
+        <a class="neon-btn reveal" data-reveal href="https://www.tiktok.com/@pozzidod" target="_blank" rel="noreferrer" data-ripple>
+          <span class="neon-btn__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M16.6 3c.6 3.2 2.8 5.3 6 5.6v3.2c-2.2.1-4.2-.6-6-2v6.7c0 4-3.3 7.3-7.3 7.3S2 20.5 2 16.5s3.3-7.3 7.3-7.3c.5 0 1 .1 1.5.2v3.6c-.5-.2-1-.3-1.5-.3-2.1 0-3.8 1.7-3.8 3.8s1.7 3.8 3.8 3.8 3.8-1.7 3.8-3.8V3h3.3Z"/>
+            </svg>
+          </span>
+          <span>TikTok</span>
+          <span class="neon-btn__shine" aria-hidden="true"></span>
+        </a>
+
+        <button id="discordBtn" class="neon-btn reveal" data-reveal type="button" data-ripple>
+          <span class="neon-btn__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M20 4a16 16 0 0 0-4.1-1.3l-.2.4c1.5.4 2.2.8 3.1 1.4A14 14 0 0 0 5.2 4.5c.9-.6 1.7-1 3.1-1.4l-.2-.4A16 16 0 0 0 4 4c-2.6 3.9-3.3 7.7-3 11.5A16 16 0 0 0 8.6 19l.9-1.3c-1.6-.5-2.5-1.2-3.4-2 .3.2.7.4 1.1.6 4.1 1.9 9.1 1.9 13.2 0 .4-.2.8-.4 1.1-.6-.9.8-1.8 1.5-3.4 2l.9 1.3a16 16 0 0 0 7.6-3.5C23.3 11.7 22.6 7.9 20 4Zm-9.3 10.6c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/>
+            </svg>
+          </span>
+          <span>Discord</span>
+          <span class="neon-btn__sub" id="discordHint">velepmix</span>
+          <span class="neon-btn__shine" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div id="help" class="hero__help reveal" data-reveal>
+        <button id="helpBtn" class="help__btn" type="button" aria-label="Подсказки" aria-expanded="false">
+          <span class="help__dot" aria-hidden="true">?</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div id="helpPopover" class="help__popover" role="dialog" aria-label="Подсказки" aria-hidden="true">
+    <span class="help__tail" aria-hidden="true"></span>
+    <div class="help__title">Подсказки</div>
+    <div class="help__list">
+      <div class="help__item">
+        <span class="help__k">Music</span>
+        <span class="help__v">Чтобы послушать любимую музыку Юрия Верхова — нажми кнопку <b>Music</b> в правом верхнем углу.</span>
+      </div>
+      <div class="help__item">
+        <span class="help__k">Player</span>
+        <span class="help__v">Плеер сверху раскрывается при наведении (ПК) или тапе (телефон).</span>
+      </div>
+      <div class="help__item">
+        <span class="help__k">Discord</span>
+        <span class="help__v">Кнопка Discord копирует ник и открывает Discord Web.</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
