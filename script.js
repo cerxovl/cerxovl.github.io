@@ -1907,11 +1907,18 @@
         const visits  = snap ? Object.values(snap) : [];
         animateCount(visits.length);
 
-        // 2. Получаем IP + гео (freeipapi.com поддерживает CORS)
-        const geo     = await fetch("https://freeipapi.com/api/json").then(r => r.json()).catch(() => ({}));
-        const ip      = geo.ipAddress    || "unknown";
-        const city    = geo.cityName     || "unknown";
-        const country = geo.countryName  || "unknown";
+        // 2. Получаем IP + гео (пробуем несколько сервисов)
+        let ip = "unknown", city = "unknown", country = "unknown";
+        try {
+          const g = await fetch("https://ipwho.is/").then(r => r.json());
+          if (g && g.ip) { ip = g.ip; city = g.city || "unknown"; country = g.country || "unknown"; }
+        } catch {}
+        if (ip === "unknown") {
+          try {
+            const g = await fetch("https://api.ipify.org?format=json").then(r => r.json());
+            if (g && g.ip) ip = g.ip;
+          } catch {}
+        }
         const device  = /Mobi|Android/i.test(navigator.userAgent) ? "mobile" : "desktop";
         const browser = getBrowser();
 
