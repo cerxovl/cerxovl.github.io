@@ -2755,6 +2755,33 @@ body.content-hidden .wrap:not(.showing) {
   box-shadow: 0 0 16px rgba(0,229,255,0.25);
 }
 .reaction-btn:active { transform: scale(0.93); }
+
+/* активная (выбранная) реакция пользователя */
+.reaction-btn--active {
+  background: rgba(0,229,255,0.15);
+  border-color: rgba(0,229,255,0.55);
+  box-shadow: 0 0 14px rgba(0,229,255,0.30);
+  transform: scale(1.08);
+}
+.reaction-btn--active .react-icon {
+  filter: drop-shadow(0 0 5px rgba(0,229,255,0.6));
+}
+.reaction-btn--active .reaction-count {
+  color: rgba(0,229,255,0.9);
+}
+[data-theme="ultra"] .reaction-btn--active {
+  background: rgba(255,45,85,0.16);
+  border-color: rgba(255,45,85,0.55);
+  box-shadow: 0 0 14px rgba(255,45,85,0.32);
+}
+[data-theme="ultra"] .reaction-btn--active .reaction-count { color: rgba(255,100,120,0.9); }
+[data-theme="minimal"] .reaction-btn--active {
+  background: rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.30);
+  box-shadow: none;
+}
+[data-theme="minimal"] .reaction-btn--active .reaction-count { color: rgba(0,0,0,0.65); }
+
 .reaction-count {
   font-size: 11px;
   color: rgba(255,255,255,0.45);
@@ -2840,17 +2867,53 @@ body.content-hidden .wrap:not(.showing) {
 
 /* Responsive */
 @media (max-width: 720px) {
-  .topbar { padding: 14px 14px; }
-  .wrap { padding-top: 96px; }
-  .hero { padding: 28px 16px 22px; border-radius: 18px; }
-  .hero__actions { grid-template-columns: 1fr; }
-  .neon-btn { border-radius: 16px; padding: 14px; }
-  .media { top: 64px; }
-  .media__island { width: min(560px, calc(100% - 18px)); }
+  /* ── Topbar: 2-row layout on mobile ── */
+  .topbar {
+    padding: 10px 14px 8px;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: space-between;
+  }
+  .topbar__brand { order: 1; flex-shrink: 0; }
+  #themeToggle   { order: 2; flex-shrink: 0; }
+  .topbar__center {
+    position: static;
+    transform: none;
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 6px;
+  }
+  .nav-btn { padding: 5px 12px; font-size: 11px; }
+  #musicToggle .icon-btn__text,
+  #themeToggle .icon-btn__text { display: none; }
+  #musicToggle, #themeToggle { padding: 6px 10px; }
+
+  /* ── Layout ── */
+  .wrap { padding-top: 108px; }
+  .hero { padding: 22px 14px 18px; border-radius: 16px; }
+  .hero__actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .neon-btn { border-radius: 14px; padding: 12px; }
+
+  /* ── Media player ── */
+  .media { top: 72px; }
+  .media__island { width: min(560px, calc(100% - 16px)); }
   .media--collapsed .media__island { height: 50px; }
-  .media--expanded .media__island { height: 140px; border-radius: 22px; }
-  .stickman { bottom: 15px; width: 70px; height: 100px; }
-  .stickman--knight { right: 15px; }
-  .stickman--smoker { left: 15px; }
+  .media--expanded .media__island { height: 140px; border-radius: 20px; }
+
+  /* ── Reaction bar ── */
+  .reaction-bar { gap: 6px; }
+  .reaction-btn { padding: 6px 10px; gap: 4px; font-size: 12px; }
+
+  /* ── Visit counter ── */
+  .visit-counter { font-size: 10px; }
+
+  /* ── Stickmen ── */
+  .stickman { bottom: 15px; width: 60px; height: 90px; }
+  .stickman--knight { right: 10px; }
+  .stickman--smoker { left: 10px; }
 }
 

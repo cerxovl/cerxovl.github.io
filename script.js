@@ -1831,9 +1831,10 @@
   (function initReactions() {
     const bar = document.getElementById("reactionBar");
     if (!bar) return;
-    let counts = {};
-    try { counts = JSON.parse(localStorage.getItem("rc") || "{}"); } catch {}
-    // Map key → mini SVG clone to float
+
+    const FB = "https://portfolio-d9472-default-rtdb.europe-west1.firebasedatabase.app";
+    const LS_KEY = "userReaction"; // stores which emoji this user picked
+
     const floatSvgs = {
       fire:  `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 3C14 3 18 8.5 16 13C19.5 9.5 19 5 17.5 3C21 6 22.5 11.5 19.5 16.5C21 15 21.5 13 21 11.5C24 15.5 23.5 20.5 19.5 23.5C16.5 25.5 10.5 25.5 8 22C5.5 18.5 7 14 10.5 12.5C9.5 15 10 17.5 11.5 18.5C10.5 14.5 12 9.5 14 3Z" fill="#ff6a00" stroke="#ffaa00" stroke-width="0.7" stroke-linejoin="round"/></svg>`,
       heart: `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 23C14 23 5 16.5 5 10.5C5 7.5 7.2 5 10 5C11.6 5 13 5.8 14 7.2C15 5.8 16.4 5 18 5C20.8 5 23 7.5 23 10.5C23 16.5 14 23 14 23Z" fill="rgba(0,180,255,0.85)" stroke="#00c0ff" stroke-width="1.4" stroke-linejoin="round"/></svg>`,
@@ -1842,31 +1843,88 @@
       note:  `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 22V9.5L22 6.5V19" stroke="rgba(160,100,255,0.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="22.5" r="3.2" fill="rgba(160,100,255,0.7)" stroke="rgba(160,100,255,0.9)" stroke-width="1.2"/><circle cx="20" cy="19.5" r="3.2" fill="rgba(160,100,255,0.7)" stroke="rgba(160,100,255,0.9)" stroke-width="1.2"/></svg>`,
     };
 
+    const btns = {};
+    bar.querySelectorAll(".reaction-btn").forEach(btn => { btns[btn.dataset.emoji] = btn; });
+
+    function setCount(key, val) {
+      const btn = btns[key];
+      if (!btn) return;
+      const span = btn.querySelector(".reaction-count");
+      if (span) span.textContent = val > 0 ? val : "";
+    }
+
+    function setActive(key) {
+      Object.keys(btns).forEach(k => btns[k].classList.toggle("reaction-btn--active", k === key));
+    }
+
+    function spawnFloat(btn, key) {
+      const r = btn.getBoundingClientRect();
+      const svgStr = floatSvgs[key] || "";
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => {
+          const el = document.createElement("span");
+          el.className = "float-reaction";
+          const x = r.left + r.width / 2 + (Math.random() - 0.5) * 50;
+          const y = r.top + r.height / 2;
+          el.innerHTML = svgStr;
+          el.style.cssText = `left:${x}px;top:${y}px;animation-delay:${i*100}ms;width:28px;height:28px;display:block;`;
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 2200);
+        }, 0);
+      }
+    }
+
+    // Load counts from Firebase
+    async function loadCounts() {
+      try {
+        const data = await fetch(FB + "/reactions.json").then(r => r.json());
+        if (data) Object.keys(data).forEach(k => setCount(k, data[k] || 0));
+      } catch {}
+    }
+
+    // Update Firebase count for a key by delta (+1 or -1)
+    async function updateCount(key, delta) {
+      try {
+        const cur = await fetch(FB + "/reactions/" + key + ".json").then(r => r.json()).catch(() => 0);
+        const next = Math.max(0, (cur || 0) + delta);
+        await fetch(FB + "/reactions/" + key + ".json", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(next)
+        });
+        setCount(key, next);
+      } catch {}
+    }
+
+    // Init: load counts + restore user's previous choice
+    loadCounts();
+    const prevChoice = localStorage.getItem(LS_KEY);
+    if (prevChoice) setActive(prevChoice);
+
+    // Click handler — radio style
     bar.querySelectorAll(".reaction-btn").forEach(btn => {
-      const key = btn.dataset.emoji;
-      counts[key] = counts[key] || 0;
-      const countSpan = btn.querySelector(".reaction-count");
-      if (countSpan) countSpan.textContent = counts[key] > 0 ? counts[key] : "";
-      btn.addEventListener("click", () => {
-        counts[key] = (counts[key] || 0) + 1;
-        if (countSpan) countSpan.textContent = counts[key];
-        try { localStorage.setItem("rc", JSON.stringify(counts)); } catch {}
-        const r = btn.getBoundingClientRect();
-        const svgStr = floatSvgs[key] || "";
-        for (let i = 0; i < 4; i++) {
-          setTimeout(() => {
-            const el = document.createElement("span");
-            el.className = "float-reaction";
-            const x = r.left + r.width / 2 + (Math.random() - 0.5) * 50;
-            const y = r.top + r.height / 2;
-            el.innerHTML = svgStr;
-            el.style.cssText = `left:${x}px;top:${y}px;animation-delay:${i * 100}ms;width:28px;height:28px;display:block;`;
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 2200);
-          }, 0);
+      btn.addEventListener("click", async () => {
+        const key = btn.dataset.emoji;
+        const prev = localStorage.getItem(LS_KEY);
+
+        if (prev === key) {
+          // Снять реакцию
+          localStorage.removeItem(LS_KEY);
+          setActive(null);
+          await updateCount(key, -1);
+        } else {
+          // Убрать старую, поставить новую
+          if (prev) await updateCount(prev, -1);
+          localStorage.setItem(LS_KEY, key);
+          setActive(key);
+          await updateCount(key, +1);
+          spawnFloat(btn, key);
         }
       });
     });
+
+    // Обновляем счётчики каждые 15 секунд
+    setInterval(loadCounts, 15000);
   })();
 
   // ══════════════════════════════════════════════════════════
