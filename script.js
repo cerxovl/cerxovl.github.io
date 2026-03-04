@@ -1873,77 +1873,21 @@
   //  VISIT COUNTER
   // ══════════════════════════════════════════════════════════
   (function initVisitCounter() {
+    // TODO: replace with Firebase Realtime Database
     const el = document.getElementById("visitNum");
     if (!el) return;
-
-    const SB_URL = "https://albiwgoodlhoyyspclbf.supabase.co";
-    const SB_KEY = "sb_publishable_TQmCdJYxYlE1f2HipZL-jA_gc_xO8r8";
-    const headers = {
-      "apikey": SB_KEY,
-      "Authorization": "Bearer " + SB_KEY,
-      "Content-Type": "application/json"
-    };
-
-    function animateCount(target) {
-      let cur = parseInt(el.textContent) || 0;
-      const step = Math.max(1, Math.ceil((target - cur) / 40));
-      const iv = setInterval(() => {
-        cur = Math.min(cur + step, target);
-        el.textContent = cur;
-        if (cur >= target) clearInterval(iv);
-      }, 28);
-    }
-
-    function getBrowser() {
-      const ua = navigator.userAgent;
-      if (ua.includes("Firefox")) return "Firefox";
-      if (ua.includes("Edg")) return "Edge";
-      if (ua.includes("OPR") || ua.includes("Opera")) return "Opera";
-      if (ua.includes("Chrome")) return "Chrome";
-      if (ua.includes("Safari")) return "Safari";
-      return "Other";
-    }
-
-    async function track() {
-      try {
-        // Get total unique visitors count to display immediately
-        const countRes = await fetch(
-          SB_URL + "/rest/v1/visits?select=id",
-          { headers: { ...headers, "Prefer": "count=exact", "Range": "0-0", "Range-Unit": "items" } }
-        );
-        const range = countRes.headers.get("content-range");
-        const total = range ? parseInt(range.split("/")[1]) || 0 : 0;
-        animateCount(total);
-
-        // Get IP + geo
-        const geo = await fetch("https://ipapi.co/json/").then(r => r.json()).catch(() => ({}));
-        const ip      = geo.ip      || "unknown";
-        const city    = geo.city    || "unknown";
-        const country = geo.country_name || "unknown";
-        const device  = /Mobi|Android/i.test(navigator.userAgent) ? "mobile" : "desktop";
-        const browser = getBrowser();
-
-        // Check if this IP ever visited (truly unique)
-        const check = await fetch(
-          SB_URL + "/rest/v1/visits?ip=eq." + encodeURIComponent(ip) + "&select=id&limit=1",
-          { headers }
-        ).then(r => r.json()).catch(() => []);
-
-        if (!check || check.length === 0) {
-          // New unique visitor — insert & update counter
-          await fetch(SB_URL + "/rest/v1/visits", {
-            method: "POST",
-            headers: { ...headers, "Prefer": "return=minimal" },
-            body: JSON.stringify({ ip, city, country, device, browser })
-          });
-          animateCount(total + 1);
-        }
-      } catch {
-        // network error — silently fail, show nothing
-      }
-    }
-
-    track();
+    let count = 0;
+    try {
+      count = parseInt(localStorage.getItem("vc") || "0") + 1;
+      localStorage.setItem("vc", count);
+    } catch {}
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(count / 45));
+    const iv = setInterval(() => {
+      cur = Math.min(cur + step, count);
+      el.textContent = cur;
+      if (cur >= count) clearInterval(iv);
+    }, 28);
   })();
 
   // ══════════════════════════════════════════════════════════
