@@ -1846,9 +1846,15 @@
     const btns = {};
     bar.querySelectorAll(".reaction-btn").forEach(btn => { btns[btn.dataset.emoji] = btn; });
 
+    // Локальный кэш счётчиков (всегда актуален для UI)
+    const localCounts = {};
+    try { Object.assign(localCounts, JSON.parse(localStorage.getItem("rcCounts") || "{}")); } catch {}
+
     function setCount(key, val) {
       const btn = btns[key];
       if (!btn) return;
+      localCounts[key] = val;
+      try { localStorage.setItem("rcCounts", JSON.stringify(localCounts)); } catch {}
       const span = btn.querySelector(".reaction-count");
       if (span) span.textContent = val > 0 ? val : "";
     }
@@ -1874,36 +1880,43 @@
       }
     }
 
-    // Load counts from Firebase
+    // Восстанавливаем локальные счётчики сразу при загрузке
+    Object.keys(localCounts).forEach(k => setCount(k, localCounts[k] || 0));
+
+    // Загружаем актуальные счётчики из Firebase (в фоне)
     async function loadCounts() {
       try {
         const data = await fetch(FB + "/reactions.json").then(r => r.json());
-        if (data) Object.keys(data).forEach(k => setCount(k, data[k] || 0));
+        if (data && typeof data === "object") {
+          Object.keys(data).forEach(k => setCount(k, Math.max(0, data[k] || 0)));
+        }
       } catch {}
     }
 
-    // Update Firebase count for a key by delta (+1 or -1)
-    async function updateCount(key, delta) {
-      try {
-        const cur = await fetch(FB + "/reactions/" + key + ".json").then(r => r.json()).catch(() => 0);
-        const next = Math.max(0, (cur || 0) + delta);
-        await fetch(FB + "/reactions/" + key + ".json", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(next)
-        });
-        setCount(key, next);
-      } catch {}
+    // Синхронизируем один счётчик с Firebase (fire-and-forget)
+    function syncToFirebase(key, delta) {
+      fetch(FB + "/reactions/" + key + ".json")
+        .then(r => r.json())
+        .then(cur => {
+          const next = Math.max(0, (cur || 0) + delta);
+          return fetch(FB + "/reactions/" + key + ".json", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(next)
+          }).then(() => next);
+        })
+        .then(next => setCount(key, next))
+        .catch(() => {});
     }
 
-    // Init: load counts + restore user's previous choice
+    // Восстанавливаем выбранную реакцию
     loadCounts();
     const prevChoice = localStorage.getItem(LS_KEY);
     if (prevChoice) setActive(prevChoice);
 
-    // Click handler — radio style
+    // Click handler — радио-стиль
     bar.querySelectorAll(".reaction-btn").forEach(btn => {
-      btn.addEventListener("click", async () => {
+      btn.addEventListener("click", () => {
         const key = btn.dataset.emoji;
         const prev = localStorage.getItem(LS_KEY);
 
@@ -1911,20 +1924,27 @@
           // Снять реакцию
           localStorage.removeItem(LS_KEY);
           setActive(null);
-          await updateCount(key, -1);
+          // Оптимистично убираем счётчик
+          setCount(key, Math.max(0, (localCounts[key] || 1) - 1));
+          syncToFirebase(key, -1);
         } else {
-          // Убрать старую, поставить новую
-          if (prev) await updateCount(prev, -1);
+          // Убрать старую
+          if (prev) {
+            setCount(prev, Math.max(0, (localCounts[prev] || 1) - 1));
+            syncToFirebase(prev, -1);
+          }
+          // Поставить новую
           localStorage.setItem(LS_KEY, key);
           setActive(key);
-          await updateCount(key, +1);
+          setCount(key, (localCounts[key] || 0) + 1);
+          syncToFirebase(key, +1);
           spawnFloat(btn, key);
         }
       });
     });
 
-    // Обновляем счётчики каждые 15 секунд
-    setInterval(loadCounts, 15000);
+    // Обновляем счётчики каждые 20 секунд
+    setInterval(loadCounts, 20000);
   })();
 
   // ══════════════════════════════════════════════════════════
