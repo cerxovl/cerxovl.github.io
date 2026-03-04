@@ -1873,21 +1873,64 @@
   //  VISIT COUNTER
   // ══════════════════════════════════════════════════════════
   (function initVisitCounter() {
-    // TODO: replace with Firebase Realtime Database
     const el = document.getElementById("visitNum");
     if (!el) return;
-    let count = 0;
-    try {
-      count = parseInt(localStorage.getItem("vc") || "0") + 1;
-      localStorage.setItem("vc", count);
-    } catch {}
-    let cur = 0;
-    const step = Math.max(1, Math.ceil(count / 45));
-    const iv = setInterval(() => {
-      cur = Math.min(cur + step, count);
-      el.textContent = cur;
-      if (cur >= count) clearInterval(iv);
-    }, 28);
+
+    const FB = "https://portfolio-d9472-default-rtdb.europe-west1.firebasedatabase.app";
+
+    function animateCount(target) {
+      let cur = parseInt(el.textContent) || 0;
+      if (target <= cur) { el.textContent = target; return; }
+      const step = Math.max(1, Math.ceil((target - cur) / 40));
+      const iv = setInterval(() => {
+        cur = Math.min(cur + step, target);
+        el.textContent = cur;
+        if (cur >= target) clearInterval(iv);
+      }, 28);
+    }
+
+    function getBrowser() {
+      const ua = navigator.userAgent;
+      if (ua.includes("Firefox")) return "Firefox";
+      if (ua.includes("Edg"))     return "Edge";
+      if (ua.includes("OPR"))     return "Opera";
+      if (ua.includes("Chrome"))  return "Chrome";
+      if (ua.includes("Safari"))  return "Safari";
+      return "Other";
+    }
+
+    async function track() {
+      try {
+        // 1. Показываем текущий счётчик сразу
+        const snapRes = await fetch(FB + "/visits.json");
+        const snap    = await snapRes.json();
+        const visits  = snap ? Object.values(snap) : [];
+        animateCount(visits.length);
+
+        // 2. Получаем IP через ipapi.co
+        const geo     = await fetch("https://ipapi.co/json/").then(r => r.json()).catch(() => ({}));
+        const ip      = geo.ip           || "unknown";
+        const city    = geo.city         || "unknown";
+        const country = geo.country_name || "unknown";
+        const device  = /Mobi|Android/i.test(navigator.userAgent) ? "mobile" : "desktop";
+        const browser = getBrowser();
+
+        // 3. Проверяем — был ли уже такой IP
+        const alreadyVisited = visits.some(v => v.ip === ip);
+        if (!alreadyVisited) {
+          await fetch(FB + "/visits.json", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ip, city, country, device, browser, time: Date.now() })
+          });
+          animateCount(visits.length + 1);
+        }
+      } catch {
+        // сеть недоступна — тихо игнорируем
+      }
+    }
+
+    track();
   })();
 
   // ══════════════════════════════════════════════════════════
