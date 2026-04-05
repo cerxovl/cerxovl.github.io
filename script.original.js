@@ -711,64 +711,100 @@
     });
   }
 
+  async function getVisitorInfo() {
+    try {
+      const res = await fetch("https://api.ipify.org?format=json");
+      const data = await res.json();
+      const ua = navigator.userAgent;
+      let device = "PC";
+      if (/android/i.test(ua)) device = "Android";
+      else if (/iphone|ipad/i.test(ua)) device = "iOS";
+      return { ip: data.ip, device };
+    } catch {
+      return { ip: "unknown", device: "unknown" };
+    }
+  }
+
   async function unlockAndPlay() {
     if (!music) return;
-
     try {
       music.muted = false;
       music.volume = 0.9;
-
       await music.play();
-
       audioUnlocked = true;
       isPlaying = true;
       showMedia();
       setPlayButtonState(true);
       startRafWhilePlaying();
-
-      if (!hasFirstPlayAnim && media) {
-        hasFirstPlayAnim = true;
-        const island = media.querySelector(".media__island");
-        island?.animate(
-          [
-            { transform: "scale(0.85)", opacity: 0 },
-            { transform: "scale(1.05)", opacity: 1 },
-            { transform: "scale(1)", opacity: 1 },
-          ],
-          { duration: 600, easing: "cubic-bezier(.34,1.56,.64,1)" }
-        );
-      }
-
-      // WebAudio graph (only over HTTP/S, not file://)
-      if (webAudioAllowed) {
-        ensureAudioGraph(true);
-        audioCtx?.resume?.().catch(() => {});
-      }
+      injectPlayerUI(); // Вживляем UI при старте
     } catch (err) {
       console.warn("[music] play() rejected:", err);
     }
-
-    updateMusicUI();
   }
+
+  function injectPlayerUI() {
+    if (!media) return;
+    const meta = media.querySelector(".media__meta");
+    const island = media.querySelector(".media__island");
+    if (!meta || !island) return;
+
+    // 1. Progress Bar
+    if (!document.getElementById("mediaProgress")) {
+      const prog = document.createElement("div");
+      prog.id = "mediaProgress";
+      prog.className = "media__progress";
+      prog.innerHTML = `
+        <div id="mediaProgressFill" class="media__progressFill"></div>
+        <div id="mediaProgressDot" class="media__progressDot"></div>
+      `;
+      island.appendChild(prog);
+      setTimeout(() => prog.classList.add("is-visible"), 10);
+    }
+
+    // 2. Bars (Visualizer)
+    if (!media.querySelector(".media__bars") && meta) {
+      const bars = document.createElement("div");
+      bars.className = "media__bars";
+      bars.innerHTML = `
+        <span class="bar bar--1"></span>
+        <span class="bar bar--2"></span>
+        <span class="bar bar--3"></span>
+        <span class="bar bar--4"></span>
+        <span class="bar bar--5"></span>
+      `;
+      meta.appendChild(bars);
+    }
+  }
+
+  function ejectPlayerUI() {
+    if (!media) return;
+    const prog = document.getElementById("mediaProgress");
+    const bars = media.querySelector(".media__bars");
+    if (prog) prog.remove();
+    if (bars) bars.remove();
+  }
+
 
   async function stopMusic() {
     if (!music) return;
-
     try {
       music.pause();
-      music.volume = 0.9; // reset volume so next play() is audible
+      music.volume = 0.9;
       isPlaying = false;
+      ejectPlayerUI(); // Удаляем UI при стопе
     } catch {
       isPlaying = false;
     }
-
     setPlayButtonState(false);
-    if (media) media.classList.remove("is-playing");
+    if (media) {
+      media.classList.remove("is-playing");
+      media.classList.remove("media--playing");
+    }
     stopReactiveGlow();
     stopRaf();
-
     updateMusicUI();
   }
+
 
   function updateMusicUI() {
     if (!musicToggle) return;
