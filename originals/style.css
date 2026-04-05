@@ -1792,28 +1792,29 @@ body:not(.fpage-active) .media {
 }
 
 .media__progress {
+  display: none;        /* Полностью убираем из разметки по умолчанию */
   height: 4px;
   background: rgba(255,255,255,0.08);
   border-radius: 10px;
   margin-top: 10px;
   position: relative;
   overflow: hidden;
-  opacity: 0;           /* Скрываем по умолчанию */
-  max-height: 0;        /* Прячем высоту */
-  transform: scaleY(0); /* Дополнительно сжимаем */
+  opacity: 0;
+  transform: scaleY(0);
   transition: opacity 0.5s var(--ease), 
-              max-height 0.5s var(--ease), 
               transform 0.5s var(--ease),
               margin-top 0.5s var(--ease);
-  will-change: opacity, max-height, transform;
+  will-change: opacity, transform;
 }
 
 .media--playing .media__progress {
+  display: block;       /* Показываем только при проигрывании */
   opacity: 1;
   max-height: 10px;
   transform: scaleY(1);
   margin-top: 14px;
 }
+
 
 .media__progressFill {
   position: absolute;
@@ -1838,12 +1839,20 @@ body:not(.fpage-active) .media {
 }
 
 .media__wave {
-  display: flex;
+  display: none;        /* Скрываем волну по умолчанию */
   gap: 4px;
   height: 16px;
   align-items: end;
   padding: 2px 2px;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
 }
+
+.media--playing .media__wave {
+  display: flex;        /* Показываем волну при проигрывании */
+  opacity: 1;
+}
+
 
 .media__wave span {
   width: 3px;
