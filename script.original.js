@@ -3,6 +3,26 @@
   Files: index.html / style.css / script.js
 */
 
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
+
+import { getDatabase, ref, runTransaction, onValue, set, push } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
+
+const firebaseConfig = {
+  databaseURL: "https://cerxovl-github-io-default-rtdb.europe-west1.firebasedatabase.app/"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Глобальные переменные для доступа из других частей скрипта
+window.db = db;
+window.ref = ref;
+window.set = set;
+window.push = push;
+window.runTransaction = runTransaction;
+window.onValue = onValue;
+
+
 (() => {
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -1643,18 +1663,41 @@
       }
 
       runWithTrampoline(stickman, btn, () => {
-        // После прыжка и "посылки ножек в водичке" — открываем ссылку
+        // После приземления — сразу открываем ссылку
+        const delay = 100; // Минимальная задержка
         setTimeout(() => {
           if (btn.tagName.toLowerCase() === 'a' && btn.href) {
-            window.open(btn.href, "_blank");
+            window.open(btn.href, "_blank", "noopener,noreferrer");
           } else if (btn.id === 'discordBtn') {
-            // Копируем ник или открываем дискорд
-            showToast("Discord: weezsas скопирован!");
-            navigator.clipboard.writeText("weezsas").catch(() => {});
+            const nick = "velepmix"; // Исправленный ник
+            showToast(`Discord: ${nick} скопирован!`);
+            navigator.clipboard.writeText(nick).catch(() => {
+              const input = document.createElement("input");
+              input.value = nick;
+              document.body.appendChild(input);
+              input.select();
+              document.execCommand("copy");
+              input.remove();
+            });
           }
-        }, 1200); // Даем посидеть и поболтать ногами подольше
+        }, delay);
       });
     }, true);
+
+    // ── Visitor Info ─────────────────────────────────────
+    async function getVisitorInfo() {
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        const ua = navigator.userAgent;
+        let device = "PC";
+        if (/android/i.test(ua)) device = "Android";
+        else if (/iphone|ipad/i.test(ua)) device = "iOS";
+        return { ip: data.ip, device };
+      } catch {
+        return { ip: "unknown", device: "unknown" };
+      }
+    }
 
     // ── Reaction + Status Logs (IP & Device) ──────────────────
     async function logToFirebase(emoji, type) {
@@ -1668,9 +1711,8 @@
           time: new Date().toISOString()
         };
         // Отправляем в Firebase (логирование)
-        const dbRef = window.dbRef; // Ссылка на базу
-        if (dbRef) {
-          const logsRef = window.push(window.ref(dbRef, 'logs/analytics'));
+        if (window.db) {
+          const logsRef = window.push(window.ref(window.db, 'logs/analytics'));
           window.set(logsRef, data);
         }
       } catch (err) {
@@ -1678,22 +1720,34 @@
       }
     }
 
-    // Слушатели для реакций (сердечки и т.д.)
-    document.querySelectorAll(".reaction-btn").forEach(rb => {
-      rb.addEventListener("click", () => {
-        const emo = rb.dataset.emoji;
-        logToFirebase(emo, "reaction");
+    // ── Visit Counter ──────────────────────────────────────────
+    if (window.db) {
+      const vRef = window.ref(window.db, 'stats/visits');
+      window.runTransaction(vRef, (curr) => (curr || 0) + 1);
+      window.onValue(vRef, (snap) => {
+        const el = document.getElementById("visitNum");
+        if (el) el.textContent = snap.val() || 0;
       });
-    });
+    }
 
-    // Слушатели для статуса (кент, знакомы и т.д.)
-    document.querySelectorAll(".friend-btn").forEach(fb => {
-      fb.addEventListener("click", () => {
-        const emo = fb.dataset.emoji;
-        logToFirebase(emo, "status");
+    // ── Reaction Counters Sync ────────────────────────────────
+    document.querySelectorAll(".reaction-btn, .friend-btn").forEach(btn => {
+      const emoji = btn.dataset.emoji;
+      if (!emoji || !window.db) return;
+      
+      const countRef = window.ref(window.db, `stats/reactions/${emoji}`);
+      window.onValue(countRef, (snap) => {
+        const countSpan = btn.querySelector(".reaction-count");
+        if (countSpan) countSpan.textContent = snap.val() || 0;
+      });
+      
+      btn.addEventListener("click", () => {
+        window.runTransaction(countRef, (curr) => (curr || 0) + 1);
+        logToFirebase(emoji, btn.classList.contains("reaction-btn") ? "reaction" : "status");
       });
     });
   }
+
 
 
   // ══════════════════════════════════════════════════════════
