@@ -1618,65 +1618,83 @@
       });
     }
 
-    // TG / TikTok / Discord — батут в ОБЫЧНОМ режиме
-    document.addEventListener("click", (e) => {
-      // Игнорируем если уже внутри перенаправления
-      if (e.target.closest("[data-ignore-capture]")) return;
-      if (document.body.classList.contains("stickman-mode")) return;
-
+    // TG / TikTok / Discord — батут в ОБЫЧНОМ режиме (или если стикмены еще не на кнопках)
+    document.addEventListener("click", async (e) => {
       const btn = e.target.closest(".character-button");
       if (!btn) return;
+      if (btn.classList.contains("media__play")) return; // Игнорируем плеер здесь
+      
       const card = btn.closest(".character-card");
       if (!card) return;
+
+      // Если мы в секретном режиме — кнопки работают по-старому (лестница к музыке)
+      if (document.body.classList.contains("stickman-mode")) return;
 
       e.preventDefault();
       e.stopImmediatePropagation();
 
       const stickman = card.classList.contains("character-card--tiktok") ? smoker : chill;
 
-      // Если стикмен уже сидит — мгновенно сбрасываем и идём к новой кнопке
+      // Если стикмен уже занят — сбрасываем всех и идем к новой цели
       if (busy) {
-        [smoker, chill].forEach(s => {
-          if (s.classList.contains("sitting") || s.classList.contains("climbing")) {
-            s.classList.remove("sitting", "climbing", "is-moving");
-            removeSittingPose(s);
-            const hp = s.querySelector(".headphones");
-            if (hp) hp.remove();
-            s.style.transition = "";
-          }
-        });
-        if (ladder)     { ladder.remove();     ladder     = null; }
-        if (trampoline) { trampoline.remove(); trampoline = null; }
-        if (chair)      { chair.remove();      chair      = null; }
-        showContent();
-        busy = false;
+        resetAll();
+        // Даем небольшую паузу для сброса стилей
+        await new Promise(r => setTimeout(r, 100));
       }
 
       runWithTrampoline(stickman, btn, () => {
-        // After animation finishes, execute button action
+        // После прыжка и "посылки ножек в водичке" — открываем ссылку
         setTimeout(() => {
           if (btn.tagName.toLowerCase() === 'a' && btn.href) {
-            if (btn.target === "_blank") {
-              window.open(btn.href, "_blank");
-            } else {
-              window.location.href = btn.href;
-            }
+            window.open(btn.href, "_blank");
           } else if (btn.id === 'discordBtn') {
-            // Trigger discord logic manually if it exists
-            const clickEvent = new MouseEvent("click", {
-              bubbles: true,
-              cancelable: true,
-              view: window
-            });
-            // Temporarily suppress the capture listener
-            btn.dataset.ignoreCapture = "true";
-            btn.dispatchEvent(clickEvent);
-            delete btn.dataset.ignoreCapture;
+            // Копируем ник или открываем дискорд
+            showToast("Discord: weezsas скопирован!");
+            navigator.clipboard.writeText("weezsas").catch(() => {});
           }
-        }, 400);
+        }, 1200); // Даем посидеть и поболтать ногами подольше
       });
     }, true);
+
+    // ── Reaction + Status Logs (IP & Device) ──────────────────
+    async function logToFirebase(emoji, type) {
+      try {
+        const info = await getVisitorInfo();
+        const data = {
+          emoji: emoji,
+          type: type, // 'reaction' or 'status'
+          ip: info.ip,
+          device: info.device,
+          time: new Date().toISOString()
+        };
+        // Отправляем в Firebase (логирование)
+        const dbRef = window.dbRef; // Ссылка на базу
+        if (dbRef) {
+          const logsRef = window.push(window.ref(dbRef, 'logs/analytics'));
+          window.set(logsRef, data);
+        }
+      } catch (err) {
+        console.warn("Analytics failed:", err);
+      }
+    }
+
+    // Слушатели для реакций (сердечки и т.д.)
+    document.querySelectorAll(".reaction-btn").forEach(rb => {
+      rb.addEventListener("click", () => {
+        const emo = rb.dataset.emoji;
+        logToFirebase(emo, "reaction");
+      });
+    });
+
+    // Слушатели для статуса (кент, знакомы и т.д.)
+    document.querySelectorAll(".friend-btn").forEach(fb => {
+      fb.addEventListener("click", () => {
+        const emo = fb.dataset.emoji;
+        logToFirebase(emo, "status");
+      });
+    });
   }
+
 
   // ══════════════════════════════════════════════════════════
   //  3D CARD TILT
