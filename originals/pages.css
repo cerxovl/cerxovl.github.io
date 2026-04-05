@@ -388,17 +388,12 @@
   align-items: center;
   justify-content: center;
 }
-.hcard__sticker img {
+.hcard__sticker svg { 
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  mix-blend-mode: screen; /* Убирает черный фон у иконок */
-}
-.hcard__sticker svg { 
-  width: 58px; height: 58px;
-  filter: invert(1);
 }
 .hcard:hover .hcard__sticker { transform: scale(1.08) rotate(-3deg); }
+
 
 
 .hcard__name {
@@ -596,16 +591,11 @@
   align-items: center;
   justify-content: center;
 }
-.hcard-overlay__sticker img {
+.hcard-overlay__sticker svg { 
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  mix-blend-mode: screen;
 }
-.hcard-overlay__sticker svg { 
-  width: 64px; height: 64px; 
-  filter: drop-shadow(0 4px 12px rgba(26,31,255,0.25)) invert(1); 
-}
+
 
 
 .hcard-overlay__name {
