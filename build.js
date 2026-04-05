@@ -71,12 +71,14 @@ console.log(`   script.js: ${jsBefore} KB → ${kb("script.js")}`);
 //  2. CSS — минификация
 // ══════════════════════════════════════════════════════════════
 console.log("\n🎨 CSS минификация...");
-backup("style.css");
-const cssSrc    = fs.readFileSync("style.css", "utf8");
-const cssResult = new CleanCSS({ level: 2 }).minify(cssSrc);
-fs.writeFileSync("style.css", cssResult.styles, "utf8");
-console.log(`   style.css: ${(Buffer.byteLength(cssSrc)/1024).toFixed(1)} KB → ${kb("style.css")}`);
-
+const origCss = path.join(ORIG_DIR, "style.css");
+if (!fs.existsSync(origCss) && fs.existsSync("style.css")) backup("style.css");
+if (fs.existsSync(origCss)) {
+  const cssSrc    = fs.readFileSync(origCss, "utf8");
+  const cssResult = new CleanCSS({ level: 2 }).minify(cssSrc);
+  fs.writeFileSync("style.css", cssResult.styles, "utf8");
+  console.log(`   style.css: ${(Buffer.byteLength(cssSrc)/1024).toFixed(1)} KB → ${kb("style.css")}`);
+}
 // ══════════════════════════════════════════════════════════════
 //  3. HTML — минификация
 // ══════════════════════════════════════════════════════════════
@@ -98,15 +100,16 @@ const htmlOpts = {
 
 (async () => {
   for (const file of htmlFiles) {
-    if (!fs.existsSync(file)) continue;
-    backup(file);
-    const src     = fs.readFileSync(file, "utf8");
+    const origPath = path.join(ORIG_DIR, file);
+    if (!fs.existsSync(origPath) && fs.existsSync(file)) backup(file);
+    if (!fs.existsSync(origPath)) continue;
+    const src     = fs.readFileSync(origPath, "utf8");
     const before  = (Buffer.byteLength(src) / 1024).toFixed(1);
     const result  = await minifyHtml(src, htmlOpts);
     fs.writeFileSync(file, result, "utf8");
     console.log(`   ${file}: ${before} KB → ${kb(file)}`);
   }
 
-  console.log("\n✅ Готово! Бэкапы сохранены в ./originals/");
+  console.log("\n✅ Готово! Исходники находятся в ./originals/ (или script.original.js)");
   console.log("   Для редактирования: правь оригиналы в ./originals/, потом node build.js\n");
 })();

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07070b" />
+  <title>verxov — Хобби</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="pages.css" />
+</head>
+<body class="subpage" data-theme="dark">
+
+  <!-- Background -->
+  <div class="bg" aria-hidden="true">
+    <video class="bg__video" autoplay muted loop playsinline preload="metadata" poster="cover.jpg">
+      <source src="background.mp4" type="video/mp4" />
+    </video>
+    <div class="bg__overlay"></div>
+    <div class="bg__vignette"></div>
+  </div>
+
+  <div id="cursor" class="cursor" aria-hidden="true"></div>
+
+  <!-- Stickmen -->
+  <div class="stickman stickman--chill" aria-hidden="true">
+    <svg class="stickman__svg" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+      <circle class="chill__head" cx="50" cy="15" r="12"/>
+      <rect class="chill__glasses" x="42" y="13" width="7" height="5" rx="1"/>
+      <rect class="chill__glasses" x="51" y="13" width="7" height="5" rx="1"/>
+      <line class="chill__glasses-bridge" x1="49" y1="15" x2="51" y2="15"/>
+      <line class="chill__body" x1="50" y1="27" x2="50" y2="70"/>
+      <line class="chill__arm chill__arm--left" x1="50" y1="40" x2="35" y2="55"/>
+      <line class="chill__arm chill__arm--right" x1="50" y1="40" x2="65" y2="55"/>
+      <line class="chill__leg chill__leg--left" x1="50" y1="70" x2="42" y2="100"/>
+      <line class="chill__leg chill__leg--right" x1="50" y1="70" x2="58" y2="100"/>
+    </svg>
+  </div>
+  <div class="stickman stickman--smoker" aria-hidden="true">
+    <svg class="stickman__svg" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+      <circle class="smoker__head" cx="50" cy="15" r="12"/>
+      <rect class="smoker__glasses" x="42" y="13" width="7" height="5" rx="1"/>
+      <rect class="smoker__glasses" x="51" y="13" width="7" height="5" rx="1"/>
+      <line class="smoker__glasses-bridge" x1="49" y1="15" x2="51" y2="15"/>
+      <line class="smoker__cigar" x1="58" y1="20" x2="70" y2="22"/>
+      <circle class="smoker__smoke smoker__smoke--1" cx="72" cy="20" r="2"/>
+      <circle class="smoker__smoke smoker__smoke--2" cx="75" cy="17" r="2.5"/>
+      <circle class="smoker__smoke smoker__smoke--3" cx="78" cy="14" r="2"/>
+      <line class="smoker__body" x1="50" y1="27" x2="50" y2="70"/>
+      <line class="smoker__arm smoker__arm--left" x1="50" y1="40" x2="35" y2="60"/>
+      <line class="smoker__arm smoker__arm--right" x1="50" y1="40" x2="65" y2="50"/>
+      <line class="smoker__leg smoker__leg--left" x1="50" y1="70" x2="42" y2="100"/>
+      <line class="smoker__leg smoker__leg--right" x1="50" y1="70" x2="58" y2="100"/>
+    </svg>
+  </div>
+
+  <!-- Topbar -->
+  <header class="sp-topbar">
+    <a href="index.html" class="sp-back">
+      <svg viewBox="0 0 20 20" fill="none"><path d="M13 4L7 10l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Портфолио
+    </a>
+    <span class="sp-topbar__title">Хобби</span>
+    <div class="sp-topbar__right"><a href="about.html" class="sp-nav-link">← Обо мне</a></div>
+  </header>
+
+  <!-- Card expand overlay -->
+  <div class="hcard-overlay" id="hcardOverlay" aria-hidden="true">
+    <div class="hcard-overlay__backdrop"></div>
+    <div class="hcard-overlay__box">
+      <button class="hcard-overlay__close" aria-label="Закрыть">✕</button>
+      <div class="hcard-overlay__sticker" id="overlaySticker"></div>
+      <div class="hcard-overlay__name" id="overlayName"></div>
+      <div class="hcard-overlay__body" id="overlayBody"></div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main class="sp-main sp-main--centered">
+    <div class="hobbies-section">
+      <div class="hobbies-section__head">
+        <h1 class="hobbies-section__title">Чем занимаюсь</h1>
+        <p class="hobbies-section__sub">Нажми на карточку чтобы узнать подробнее</p>
+      </div>
+
+      <div class="hobby-grid hobby-grid--wide">
+
+        <!-- 1. Мобильные игры -->
+        <div class="hcard hcard--games" data-card="mobile-games">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="18" width="52" height="30" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <line x1="20" y1="27" x2="20" y2="37" stroke="#1a1fff" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="15" y1="32" x2="25" y2="32" stroke="#1a1fff" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="42" cy="28" r="3.5" fill="#ff3dab"/>
+              <circle cx="49" cy="33" r="3.5" fill="#1a1fff"/>
+              <circle cx="42" cy="38" r="3.5" fill="#1a1fff"/>
+              <circle cx="35" cy="33" r="3.5" fill="#ff3dab"/>
+              <ellipse cx="32" cy="19" rx="9" ry="5" fill="#e8eaff" stroke="#1a1fff" stroke-width="3"/>
+              <rect x="22" y="52" width="20" height="6" rx="3" fill="#e8eaff" stroke="#1a1fff" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="hcard__tag">📱 Мобильные</div>
+          <div class="hcard__name">Игры</div>
+          <div class="hcard__desc">Brawl Stars, Mobile Legends, Clash Royale — только телефон</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+        <!-- 2. Игры на ПК -->
+        <div class="hcard hcard--pc-games" data-card="pc-games">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="10" width="52" height="34" rx="8" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <rect x="10" y="14" width="44" height="26" rx="4" fill="#e8eaff"/>
+              <rect x="24" y="44" width="16" height="5" rx="2" fill="#e8eaff" stroke="#1a1fff" stroke-width="3"/>
+              <rect x="18" y="49" width="28" height="4" rx="2" fill="#e8eaff" stroke="#1a1fff" stroke-width="3"/>
+              <polyline points="18,30 23,24 28,30 33,20 38,30 43,26" fill="none" stroke="#ff3dab" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="hcard__tag">🖥️ ПК</div>
+          <div class="hcard__name">Игры на ПК</div>
+          <div class="hcard__desc">Иногда сажусь за комп и в что-нибудь играю</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+        <!-- 3. Программирование -->
+        <div class="hcard hcard--code" data-card="code">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="8" width="52" height="42" rx="10" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <rect x="6" y="8" width="52" height="14" rx="10" fill="#e8eaff" stroke="#1a1fff" stroke-width="4"/>
+              <circle cx="16" cy="15" r="3" fill="#ff3dab"/>
+              <circle cx="26" cy="15" r="3" fill="#ff3dab"/>
+              <circle cx="36" cy="15" r="3" fill="#1a1fff"/>
+              <polyline points="14,31 20,37 14,43" fill="none" stroke="#1a1fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="26" y1="40" x2="44" y2="40" stroke="#ff3dab" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="hcard__tag">⌨️ Код</div>
+          <div class="hcard__name">Программирование</div>
+          <div class="hcard__desc">Вайбкодинг, Java, Python, HTML, C++</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+        <!-- 4. Музыка -->
+        <div class="hcard hcard--music" data-card="music">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <path d="M26 42 L26 22 L46 18 L46 38" fill="none" stroke="#1a1fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="22" cy="43" r="7" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5"/>
+              <circle cx="42" cy="39" r="7" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5"/>
+              <circle cx="22" cy="43" r="3" fill="#ff3dab"/>
+              <circle cx="42" cy="39" r="3" fill="#ff3dab"/>
+            </svg>
+          </div>
+          <div class="hcard__tag">🎵 Аудио</div>
+          <div class="hcard__name">Музыка</div>
+          <div class="hcard__desc">По вайбу — что подходит, то и слушаю</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+        <!-- 5. Соц сети -->
+        <div class="hcard hcard--social" data-card="social">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <circle cx="20" cy="28" r="8" fill="#e8eaff" stroke="#1a1fff" stroke-width="3"/>
+              <circle cx="44" cy="22" r="7" fill="#e8eaff" stroke="#1a1fff" stroke-width="3"/>
+              <circle cx="44" cy="42" r="7" fill="#e8eaff" stroke="#1a1fff" stroke-width="3"/>
+              <line x1="28" y1="25" x2="37" y2="24" stroke="#ff3dab" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="28" y1="31" x2="37" y2="40" stroke="#ff3dab" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="hcard__tag">📲 Онлайн</div>
+          <div class="hcard__name">Соц Сети</div>
+          <div class="hcard__desc">Telegram и TikTok — два главных места</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+        <!-- 6. Режим Сна -->
+        <div class="hcard hcard--sleep" data-card="sleep">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <path d="M36 14 A18 18 0 1 0 50 38 A13 13 0 0 1 36 14Z" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5" stroke-linejoin="round"/>
+              <text x="40" y="22" font-size="10" fill="#ff3dab" font-weight="bold">Z</text>
+              <text x="46" y="16" font-size="8" fill="#1a1fff" font-weight="bold">z</text>
+              <text x="50" y="11" font-size="6" fill="#ff3dab" font-weight="bold">z</text>
+            </svg>
+          </div>
+          <div class="hcard__tag">😴 Сон</div>
+          <div class="hcard__name">Режим Сна</div>
+          <div class="hcard__desc">Либо сплю утром, либо сплю ночью — система</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+        <!-- 7. Троллинг -->
+        <div class="hcard hcard--troll" data-card="troll">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <circle cx="32" cy="28" r="13" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5"/>
+              <circle cx="26" cy="25" r="3" fill="#1a1fff"/>
+              <circle cx="38" cy="25" r="3" fill="#1a1fff"/>
+              <path d="M24 34 Q32 42 40 34" fill="none" stroke="#ff3dab" stroke-width="3" stroke-linecap="round"/>
+              <path d="M20 14 Q32 8 44 14" fill="#e8eaff" stroke="#1a1fff" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="20" cy="14" r="3" fill="#ff3dab"/>
+              <circle cx="44" cy="14" r="3" fill="#ff3dab"/>
+            </svg>
+          </div>
+          <div class="hcard__tag">😈 Интернет</div>
+          <div class="hcard__name">ТРОЛЛИНГ</div>
+          <div class="hcard__desc">Провокации, хаос в комментах, интернет-развлечение</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+        <!-- 8. DOX -->
+        <div class="hcard hcard--dox" data-card="dox">
+          <div class="hcard__sticker">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+              <circle cx="28" cy="28" r="12" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5"/>
+              <line x1="37" y1="37" x2="52" y2="52" stroke="#1a1fff" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="28" cy="28" r="4" fill="none" stroke="#ff3dab" stroke-width="2.5"/>
+              <line x1="28" y1="16" x2="28" y2="20" stroke="#ff3dab" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="28" y1="36" x2="28" y2="40" stroke="#ff3dab" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="16" y1="28" x2="20" y2="28" stroke="#ff3dab" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="36" y1="28" x2="40" y2="28" stroke="#ff3dab" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="hcard__tag">🔍 OSINT</div>
+          <div class="hcard__name">DOX</div>
+          <div class="hcard__desc">HUMINT + OSINT — поиск по открытым источникам</div>
+          <div class="hcard__hint">Нажми →</div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Expand data (hidden) -->
+  <script type="application/json" id="cardData">
+  {
+    "mobile-games": {
+      "name": "Игры 📱 Мобильные",
+      "body": "<div class='exp-games'><p class='exp-sub'>Только мобилки, ПК не нужен</p><div class='exp-game-list'><div class='exp-game'><img src='https://play-lh.googleusercontent.com/oySYfm7jpqxH6J03yKXYU69SmV2BcJ92Wa9BWPUnGXI8NFW1u5aKik3SY3Is7INsf4U=s180-rw' alt='Brawl Stars' loading='lazy'/><span>Brawl Stars</span></div><div class='exp-game'><img src='https://play-lh.googleusercontent.com/Op7v9XdsyxjrKImMD5RLyiLRCAHs3DMQFANwfsuMTw1hq0lH4j8tOqD3Fd7zyr4ixmC0xoqqRkQDBjAd46NsFQ=s180-rw' alt='Mobile Legends' loading='lazy'/><span>Mobile Legends</span></div><div class='exp-game'><img src='https://play-lh.googleusercontent.com/gnSC6s8-6Tjc4uhvDW7nfrSJxpbhllzYhgX8y374N1LYvWBStn2YhozS9XXaz1T_Pi2q=s180-rw' alt='Clash Royale' loading='lazy'/><span>Clash Royale</span></div></div></div>"
+    },
+    "pc-games": {
+      "name": "Игры 🖥️ ПК",
+      "body": "<p class='exp-sub'>ПК — иногда. Мобилки — всегда</p><div class='exp-pc-list'><div class='exp-pc-section-title'><span class='exp-pc-badge exp-pc-badge--done'>✅ Прошёл сюжет</span></div><div class='exp-pc-game'><img class='exp-pc-icon exp-pc-img' src='https://cdn.akamai.steamstatic.com/steam/apps/1593500/header.jpg' alt='God of War' loading='lazy'/><div class='exp-pc-info'><b>God of War</b><span>Прошёл сюжетку ✓</span></div></div><div class='exp-pc-game'><img class='exp-pc-icon exp-pc-img' src='https://cdn.akamai.steamstatic.com/steam/apps/1817070/header.jpg' alt='Spider-Man Remastered' loading='lazy'/><div class='exp-pc-info'><b>Spider-Man</b><span>Все части прошёл ✓</span></div></div><div class='exp-pc-game'><img class='exp-pc-icon exp-pc-img' src='https://cdn.akamai.steamstatic.com/steam/apps/242760/header.jpg' alt='The Forest' loading='lazy'/><div class='exp-pc-info'><b>The Forest</b><span>Прошёл сюжетку ✓</span></div></div><div class='exp-pc-game'><img class='exp-pc-icon exp-pc-img' src='https://cdn.akamai.steamstatic.com/steam/apps/620/header.jpg' alt='Portal 2' loading='lazy'/><div class='exp-pc-info'><b>Portal 2</b><span>Прошёл сюжетку ✓</span></div></div><div class='exp-pc-section-title' style='margin-top:14px'><span class='exp-pc-badge exp-pc-badge--playing'>🎮 Играю (онлайн)</span></div><div class='exp-pc-game'><img class='exp-pc-icon exp-pc-img' src='https://cdn.akamai.steamstatic.com/steam/apps/976310/header.jpg' alt='Mortal Kombat 11' loading='lazy'/><div class='exp-pc-info'><b>Mortal Kombat</b><span>Онлайн игра</span></div></div><div class='exp-pc-game'><img class='exp-pc-icon exp-pc-img' src='https://cdn.akamai.steamstatic.com/steam/apps/1506830/header.jpg' alt='FIFA 22' loading='lazy'/><div class='exp-pc-info'><b>FIFA 22</b><span>Онлайн игра</span></div></div><div class='exp-pc-game'><img class='exp-pc-icon exp-pc-img' src='img/fortnite.png' alt='Fortnite'/><div class='exp-pc-info'><b>Fortnite</b><span>Онлайн игра</span></div></div><div class='exp-pc-game'><div class='exp-pc-icon exp-pc-img' style='background:#1a0a2e;display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:10px;flex-shrink:0'>🕷️</div><div class='exp-pc-info'><b>SpiderHack</b><span>Онлайн игра</span></div></div></div>"
+    },
+    "code": {
+      "name": "Программирование ⌨️",
+      "body": "<p class='exp-sub'>Учусь и делаю — для себя и для понимания</p><div class='exp-lang-list'><div class='exp-lang'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect width='48' height='48' rx='10' fill='#fff'/><text x='6' y='32' font-size='22' font-weight='900' fill='#1a1fff'>Vi</text><text x='26' y='32' font-size='16' fill='#ff3dab'>be</text></svg><div><b>Вайбкодинг</b><span>Кидаешь идею в ИИ — получаешь код. Подход 2025</span></div></div><div class='exp-lang'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect width='48' height='48' rx='10' fill='#fff'/><rect x='10' y='10' width='28' height='28' rx='6' fill='#e8eaff' stroke='#1a1fff' stroke-width='2.5'/><text x='13' y='30' font-size='14' font-weight='900' fill='#ff3dab'>Py</text></svg><div><b>Python</b><span>Скрипты, автоматизация, основы</span></div></div><div class='exp-lang'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect width='48' height='48' rx='10' fill='#fff'/><polyline points='16,14 10,24 16,34' fill='none' stroke='#1a1fff' stroke-width='3' stroke-linecap='round'/><polyline points='32,14 38,24 32,34' fill='none' stroke='#1a1fff' stroke-width='3' stroke-linecap='round'/><line x1='20' y1='24' x2='28' y2='24' stroke='#ff3dab' stroke-width='3' stroke-linecap='round'/></svg><div><b>HTML / CSS</b><span>Сайты — основное что делаю</span></div></div><div class='exp-lang'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect width='48' height='48' rx='10' fill='#fff'/><text x='8' y='32' font-size='20' font-weight='900' fill='#1a1fff'>C</text><text x='22' y='28' font-size='14' font-weight='900' fill='#ff3dab'>++</text></svg><div><b>C++</b><span>Изучаю основы</span></div></div><div class='exp-lang'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect width='48' height='48' rx='10' fill='#fff'/><rect x='12' y='14' width='10' height='10' rx='2' fill='#e8eaff' stroke='#1a1fff' stroke-width='2'/><path d='M12 30 Q17 36 22 30' fill='none' stroke='#ff3dab' stroke-width='2.5' stroke-linecap='round'/><line x1='28' y1='16' x2='38' y2='16' stroke='#1a1fff' stroke-width='2.5' stroke-linecap='round'/><line x1='28' y1='22' x2='36' y2='22' stroke='#1a1fff' stroke-width='2.5' stroke-linecap='round'/><line x1='28' y1='28' x2='38' y2='28' stroke='#ff3dab' stroke-width='2.5' stroke-linecap='round'/></svg><div><b>Java</b><span>Пробовал, разбираюсь</span></div></div></div>"
+    },
+    "music": {
+      "name": "Музыка 🎵",
+      "body": "<p class='exp-sub'>По вайбу — что подходит по настроению</p><p class='exp-text'>Конкретный плейлист не раскрываю — слушаю что нравится в данный момент. Иногда один трек на репите весь день, иногда всё надоедает разом. Такое.</p><div class='exp-vibe'><span>lo-fi</span><span>phonk</span><span>хип-хоп</span><span>что попадётся</span></div>"
+    },
+    "social": {
+      "name": "Соц Сети 📲",
+      "body": "<p class='exp-sub'>Сижу в основном тут</p><div class='exp-social-list'><a href='https://t.me/verysox' target='_blank' class='exp-social-item exp-social-tg'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><circle cx='24' cy='24' r='22' fill='#e8eaff' stroke='#1a1fff' stroke-width='3'/><path d='M10 24 L38 13 L29 38 L22 29 L10 24Z' fill='white' stroke='#1a1fff' stroke-width='2.5' stroke-linejoin='round'/><line x1='22' y1='29' x2='29' y2='21' stroke='#ff3dab' stroke-width='2.5'/></svg><div><b>Telegram</b><span>@verysox — основное место</span></div></a><div class='exp-social-item exp-social-tt'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect width='48' height='48' rx='14' fill='#e8eaff' stroke='#1a1fff' stroke-width='3'/><path d='M30 12 C30 12 30 22 39 24' fill='none' stroke='#1a1fff' stroke-width='3' stroke-linecap='round'/><path d='M30 12 L30 35 A9 9 0 1 1 21 26' fill='none' stroke='#1a1fff' stroke-width='3' stroke-linecap='round'/><circle cx='21' cy='35' r='6' fill='white' stroke='#1a1fff' stroke-width='3'/><circle cx='21' cy='35' r='2.5' fill='#ff3dab'/><circle cx='39' cy='19' r='4' fill='#ff3dab' stroke='#1a1fff' stroke-width='2'/></svg><div><b>TikTok</b><span>@pozzidod — залипаю больше всего</span></div></div><div class='exp-social-item exp-social-dc'><svg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'><rect width='48' height='48' rx='14' fill='#e8eaff' stroke='#1a1fff' stroke-width='3'/><path d='M16 30 C16 30 14 16 24 14 C34 16 32 30 32 30' fill='none' stroke='#1a1fff' stroke-width='3' stroke-linecap='round'/><circle cx='19' cy='26' r='5' fill='white' stroke='#1a1fff' stroke-width='3'/><circle cx='29' cy='26' r='5' fill='white' stroke='#1a1fff' stroke-width='3'/><circle cx='19' cy='26' r='2' fill='#ff3dab'/><circle cx='29' cy='26' r='2' fill='#ff3dab'/></svg><div><b>Discord</b><span>velepmix — иногда бываю</span></div></div></div>"
+    },
+    "sleep": {
+      "name": "Режим Сна 😴",
+      "body": "<p class='exp-sub'>Стабильно нестабильный режим</p><p class='exp-text'>Либо сплю утром и пинаю хуи ночью, либо сплю ночью и пинаю хуи утром. Третьего не дано. Режим иногда сбивается и потом восстанавливается сам — это нормально.</p><div class='exp-sleep-modes'><div class='exp-sleep-mode'><span>🌙</span><b>Ночной чел</b><p>Ночью активен, утром отрубается</p></div><div class='exp-sleep-mode'><span>☀️</span><b>Утренний чел</b><p>Утром вдруг встал, ночью спит</p></div></div>"
+    },
+    "troll": {
+      "name": "ТРОЛЛИНГ 😈",
+      "body": "<p class='exp-sub'>Классика интернета</p><p class='exp-text'>Троллинг — это провокации, оскорбления и манипуляции онлайн. Цель — вызвать максимальную эмоциональную реакцию у человека. Комменты, личные сообщения, форумы — везде есть место хаосу. Классический интернет-спорт, который существует столько же, сколько сам интернет.</p><div class='exp-troll-types'><span>💬 Провокации</span><span>🔥 Флейм</span><span>😂 Баиты</span><span>🎭 Ролплей</span></div>"
+    },
+    "dox": {
+      "name": "DOX 🔍",
+      "body": "<p class='exp-sub'>Поиск по открытым источникам</p><p class='exp-text'>Докс (Doxing) — сбор и публикация личной информации о человеке из открытых источников. Не взлом, не хак — всё что нужно уже лежит в открытом доступе.</p><div class='exp-dox-methods'><div class='exp-dox-item'><div class='exp-dox-icon'>🕵️</div><div><b>OSINT</b><p>Open Source Intelligence — разведка на основе открытых источников. Соцсети, форумы, утечки баз данных, публичные реестры.</p></div></div><div class='exp-dox-item'><div class='exp-dox-icon'>🧠</div><div><b>HUMINT</b><p>Human Intelligence — получение информации через людей. Социальная инженерия, общение, доверие.</p></div></div></div><p class='exp-warn'>⚠️ Всё в рамках законодательства РФ — только открытые данные</p>"
+    }
+  }
+  </script>
+
+  <script>
+    // Theme
+    const t = localStorage.getItem('theme') || 'dark';
+    document.body.dataset.theme = t;
+    document.documentElement.dataset.theme = t;
+
+    // Cursor
+    const cur = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cur.style.left    = e.clientX + 'px';
+      cur.style.top     = e.clientY + 'px';
+      cur.style.opacity = '1';
+    });
+    document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
+    document.addEventListener('mousedown',  () => cur.classList.add('is-active'));
+    document.addEventListener('mouseup',    () => cur.classList.remove('is-active'));
+
+    // Card expand
+    const cardData = JSON.parse(document.getElementById('cardData').textContent);
+    const overlay  = document.getElementById('hcardOverlay');
+    const oSticker = document.getElementById('overlaySticker');
+    const oName    = document.getElementById('overlayName');
+    const oBody    = document.getElementById('overlayBody');
+
+    function openCard(key, stickerHTML) {
+      const d = cardData[key];
+      if (!d) return;
+      oSticker.innerHTML = stickerHTML;
+      oName.textContent  = d.name;
+      oBody.innerHTML    = d.body;
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCard() {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.hcard[data-card]').forEach(card => {
+      card.addEventListener('click', () => {
+        const key     = card.dataset.card;
+        const sticker = card.querySelector('.hcard__sticker')?.innerHTML || '';
+        openCard(key, sticker);
+      });
+    });
+
+    document.querySelector('.hcard-overlay__close').addEventListener('click', closeCard);
+    document.querySelector('.hcard-overlay__backdrop').addEventListener('click', closeCard);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCard(); });
+
+    // Staggered entrance
+    document.body.classList.add('sp-enter');
+    document.querySelectorAll('.hcard').forEach((c, i) => {
+      c.style.animationDelay = (i * 0.07) + 's';
+    });
+
+    // Cursor on interactive
+    document.querySelectorAll('a, button, .hcard').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('is-active'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('is-active'));
+    });
+  </script>
+</body>
+</html>

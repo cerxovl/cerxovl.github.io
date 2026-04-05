@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07070b" />
+  <title>verxov — Обо мне</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="pages.css" />
+</head>
+<body class="subpage" data-theme="dark">
+
+  <!-- Background -->
+  <div class="bg" aria-hidden="true">
+    <video class="bg__video" autoplay muted loop playsinline preload="metadata" poster="cover.jpg">
+      <source src="background.mp4" type="video/mp4" />
+    </video>
+    <div class="bg__overlay"></div>
+    <div class="bg__vignette"></div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div id="cursor" class="cursor" aria-hidden="true"></div>
+
+  <!-- Chill stickman (right) -->
+  <div class="stickman stickman--chill" aria-hidden="true">
+    <svg class="stickman__svg" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+      <circle class="chill__head" cx="50" cy="15" r="12" />
+      <rect class="chill__glasses" x="42" y="13" width="7" height="5" rx="1" />
+      <rect class="chill__glasses" x="51" y="13" width="7" height="5" rx="1" />
+      <line class="chill__glasses-bridge" x1="49" y1="15" x2="51" y2="15" />
+      <line class="chill__body" x1="50" y1="27" x2="50" y2="70" />
+      <line class="chill__arm chill__arm--left" x1="50" y1="40" x2="35" y2="55" />
+      <line class="chill__arm chill__arm--right" x1="50" y1="40" x2="65" y2="55" />
+      <line class="chill__leg chill__leg--left" x1="50" y1="70" x2="42" y2="100" />
+      <line class="chill__leg chill__leg--right" x1="50" y1="70" x2="58" y2="100" />
+    </svg>
+  </div>
+
+  <!-- Smoker stickman (left) -->
+  <div class="stickman stickman--smoker" aria-hidden="true">
+    <svg class="stickman__svg" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+      <circle class="smoker__head" cx="50" cy="15" r="12" />
+      <rect class="smoker__glasses" x="42" y="13" width="7" height="5" rx="1" />
+      <rect class="smoker__glasses" x="51" y="13" width="7" height="5" rx="1" />
+      <line class="smoker__glasses-bridge" x1="49" y1="15" x2="51" y2="15" />
+      <line class="smoker__cigar" x1="58" y1="20" x2="70" y2="22" />
+      <circle class="smoker__smoke smoker__smoke--1" cx="72" cy="20" r="2" />
+      <circle class="smoker__smoke smoker__smoke--2" cx="75" cy="17" r="2.5" />
+      <circle class="smoker__smoke smoker__smoke--3" cx="78" cy="14" r="2" />
+      <line class="smoker__body" x1="50" y1="27" x2="50" y2="70" />
+      <line class="smoker__arm smoker__arm--left" x1="50" y1="40" x2="35" y2="60" />
+      <line class="smoker__arm smoker__arm--right" x1="50" y1="40" x2="65" y2="50" />
+      <line class="smoker__leg smoker__leg--left" x1="50" y1="70" x2="42" y2="100" />
+      <line class="smoker__leg smoker__leg--right" x1="50" y1="70" x2="58" y2="100" />
+    </svg>
+  </div>
+
+  <!-- Top bar -->
+  <header class="sp-topbar">
+    <a href="index.html" class="sp-back">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M13 4L7 10l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Портфолио
+    </a>
+    <span class="sp-topbar__title">Обо мне</span>
+    <div class="sp-topbar__right">
+      <a href="hobbies.html" class="sp-nav-link">Хобби →</a>
+    </div>
+  </header>
+
+  <!-- Hero section -->
+  <main class="sp-main sp-main--about">
+    <section class="about-hero">
+
+      <!-- Left: text -->
+      <div class="about-hero__left">
+        <div class="about-hero__tag">Учусь · Делаю · Не нарушаю</div>
+        <h1 class="about-hero__title">Обо мне</h1>
+        <p class="about-hero__desc">
+          Привет, моя лика — Юрий Верхов, и это мой сайт с информацией.
+          Мне 17 лет, учусь делать сайты и программы для своего блага и чтобы не нарушать правила.
+          Живу рядом с Москвой, не скрываюсь вроде&nbsp;бы))
+        </p>
+
+        <ul class="about-facts">
+          <li class="about-fact">
+            <span class="about-fact__sticker">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+                <path d="M32 14 A14 14 0 0 1 46 28 C46 38 32 52 32 52 C32 52 18 38 18 28 A14 14 0 0 1 32 14Z" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5" stroke-linejoin="round"/>
+                <circle cx="32" cy="28" r="5" fill="#ff3dab" stroke="#1a1fff" stroke-width="2.5"/>
+              </svg>
+            </span>
+            <span class="about-fact__text">Рядом с Москвой, РФ</span>
+          </li>
+          <li class="about-fact">
+            <span class="about-fact__sticker">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+                <path d="M20 44 C20 30 44 30 44 44" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="32" cy="22" r="10" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5"/>
+                <rect x="28" y="38" width="8" height="3" rx="1.5" fill="#ff3dab"/>
+              </svg>
+            </span>
+            <span class="about-fact__text">17 лет</span>
+          </li>
+          <li class="about-fact">
+            <span class="about-fact__sticker">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+                <path d="M36 14 A18 18 0 1 0 50 38 A13 13 0 0 1 36 14Z" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5" stroke-linejoin="round"/>
+                <circle cx="46" cy="18" r="3.5" fill="#ff3dab"/>
+                <circle cx="52" cy="27" r="2.5" fill="#ff3dab"/>
+              </svg>
+            </span>
+            <span class="about-fact__text">Активен ночью и утром — как получится</span>
+          </li>
+          <li class="about-fact">
+            <span class="about-fact__sticker">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="8" width="48" height="48" rx="14" fill="white" stroke="#1a1fff" stroke-width="4"/>
+                <path d="M26 42 L26 22 L46 18 L46 38" fill="none" stroke="#1a1fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="22" cy="43" r="7" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5"/>
+                <circle cx="42" cy="39" r="7" fill="#e8eaff" stroke="#1a1fff" stroke-width="3.5"/>
+                <circle cx="22" cy="43" r="3" fill="#ff3dab"/>
+                <circle cx="42" cy="39" r="3" fill="#ff3dab"/>
+              </svg>
+            </span>
+            <span class="about-fact__text">Слушаю треки какие по душе</span>
+          </li>
+          <li class="about-fact">
+            <span class="about-fact__sticker">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="8" width="52" height="42" rx="10" fill="white" stroke="#1a1fff" stroke-width="4"/>
+                <rect x="6" y="8" width="52" height="14" rx="10" fill="#e8eaff" stroke="#1a1fff" stroke-width="4"/>
+                <circle cx="16" cy="15" r="3" fill="#ff3dab"/>
+                <circle cx="26" cy="15" r="3" fill="#ff3dab"/>
+                <polyline points="14,31 20,37 14,43" fill="none" stroke="#1a1fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="26" y1="40" x2="44" y2="40" stroke="#ff3dab" stroke-width="3.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="about-fact__text">Учусь делать сайты и программы</span>
+          </li>
+        </ul>
+
+        <div class="about-hero__actions">
+          <a href="https://t.me/verysox" class="sp-btn sp-btn--primary" target="_blank" rel="noreferrer">
+            Написать в Telegram
+          </a>
+          <a href="hobbies.html" class="sp-btn sp-btn--ghost">
+            Мои хобби →
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: avatar -->
+      <div class="about-hero__right">
+        <div class="about-hero__avatar-wrap">
+          <img src="avatar.jpg" alt="verxov" class="about-hero__avatar" draggable="false" />
+          <div class="about-hero__avatar-glow" aria-hidden="true"></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="about-stats">
+          <div class="about-stat">
+            <div class="about-stat__num">17</div>
+            <div class="about-stat__label">лет</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat__num">1</div>
+            <div class="about-stat__label">плейлист</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat__num">24/7</div>
+            <div class="about-stat__label">онлайн</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Skills section -->
+    <section class="skills-section">
+      <h2 class="skills-section__title">Навыки</h2>
+      <p class="skills-section__sub">что умею на данный момент</p>
+
+      <div class="skills-list">
+        <div class="skill-item" data-pct="72">
+          <div class="skill-item__header">
+            <span class="skill-item__name">HTML / CSS</span>
+            <span class="skill-item__pct">72%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar__fill" style="--pct:72%"></div>
+          </div>
+        </div>
+        <div class="skill-item" data-pct="45">
+          <div class="skill-item__header">
+            <span class="skill-item__name">JavaScript</span>
+            <span class="skill-item__pct">45%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar__fill" style="--pct:45%"></div>
+          </div>
+        </div>
+        <div class="skill-item" data-pct="38">
+          <div class="skill-item__header">
+            <span class="skill-item__name">Python</span>
+            <span class="skill-item__pct">38%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar__fill" style="--pct:38%"></div>
+          </div>
+        </div>
+        <div class="skill-item" data-pct="25">
+          <div class="skill-item__header">
+            <span class="skill-item__name">Java</span>
+            <span class="skill-item__pct">25%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar__fill" style="--pct:25%"></div>
+          </div>
+        </div>
+        <div class="skill-item" data-pct="20">
+          <div class="skill-item__header">
+            <span class="skill-item__name">C++</span>
+            <span class="skill-item__pct">20%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar__fill" style="--pct:20%"></div>
+          </div>
+        </div>
+        <div class="skill-item" data-pct="5">
+          <div class="skill-item__header">
+            <span class="skill-item__name">Вайбкодинг</span>
+            <span class="skill-item__pct">5%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar__fill skill-bar__fill--vibe" style="--pct:5%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location section -->
+    <section class="location-section">
+      <h2 class="location-section__title">Местоположение</h2>
+      <p class="location-section__sub">где обитаю</p>
+      <div class="location-card">
+        <!-- Stylized Russia SVG map -->
+        <svg class="location-map" viewBox="0 0 520 300" xmlns="http://www.w3.org/2000/svg" aria-label="Карта России">
+          <!-- Grid lines -->
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,229,255,0.06)" stroke-width="0.8"/>
+            </pattern>
+          </defs>
+          <rect width="520" height="300" fill="url(#grid)"/>
+
+          <!-- Russia approximate shape (simplified) -->
+          <path class="map-russia" d="
+            M 48,80 L 70,62 L 100,54 L 140,48 L 185,44 L 230,42 L 270,44
+            L 310,42 L 350,38 L 390,36 L 430,40 L 465,52 L 490,68 L 505,88
+            L 500,110 L 488,130 L 470,148 L 455,165 L 440,178 L 420,185
+            L 400,192 L 375,198 L 355,205 L 335,215 L 315,228 L 295,240
+            L 275,250 L 255,258 L 235,252 L 215,240 L 195,228 L 175,218
+            L 155,210 L 130,205 L 108,198 L 85,188 L 65,172 L 48,155
+            L 36,135 L 30,115 L 34,95 Z
+          "/>
+
+          <!-- Decorative scan line -->
+          <line class="map-scan" x1="0" y1="150" x2="520" y2="150"/>
+
+          <!-- Moscow pin -->
+          <circle class="map-pin-pulse" cx="248" cy="138" r="18"/>
+          <circle class="map-pin-pulse map-pin-pulse--2" cx="248" cy="138" r="12"/>
+          <circle class="map-pin-dot" cx="248" cy="138" r="5"/>
+
+          <!-- Moscow label -->
+          <text class="map-label" x="262" y="133">Москва</text>
+          <text class="map-label map-label--sub" x="262" y="148">рядом</text>
+
+          <!-- Coordinates -->
+          <text class="map-coords" x="16" y="285">55.75°N 37.62°E</text>
+          <text class="map-coords" x="380" y="285">Московская обл.</text>
+        </svg>
+
+        <div class="location-meta">
+          <div class="location-badge">
+            <span class="location-badge__dot"></span>
+            Рядом с Москвой
+          </div>
+          <div class="location-badge location-badge--secondary">
+            Россия · РФ
+          </div>
+          <div class="location-badge location-badge--secondary">
+            UTC+3
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Theme from localStorage
+    const t = localStorage.getItem('theme') || 'dark';
+    document.body.dataset.theme = t;
+    document.documentElement.dataset.theme = t;
+
+    // Custom cursor
+    const cur = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cur.style.left    = e.clientX + 'px';
+      cur.style.top     = e.clientY + 'px';
+      cur.style.opacity = '1';
+    });
+    document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
+    document.addEventListener('mousedown',  () => cur.classList.add('is-active'));
+    document.addEventListener('mouseup',    () => cur.classList.remove('is-active'));
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('is-active'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('is-active'));
+    });
+
+    // Entrance animation
+    document.body.classList.add('sp-enter');
+
+    // Skill bar IntersectionObserver animation
+    const skillObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const item = entry.target;
+        item.classList.add('is-visible');
+        const fill = item.querySelector('.skill-bar__fill');
+        if (fill) {
+          const pct = item.dataset.pct + '%';
+          // slight delay for stagger
+          const idx = Array.from(item.parentElement.children).indexOf(item);
+          setTimeout(() => { fill.style.width = pct; }, idx * 120);
+        }
+        skillObs.unobserve(item);
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.skill-item').forEach(el => skillObs.observe(el));
+  </script>
+</body>
+</html>
