@@ -73,14 +73,19 @@ console.log(`   script.js: ${jsBefore} KB → ${kb("script.js")}`);
 //  2. CSS — минификация
 // ══════════════════════════════════════════════════════════════
 console.log("\n🎨 CSS минификация...");
-const origCss = path.join(ORIG_DIR, "style.css");
-if (!fs.existsSync(origCss) && fs.existsSync("style.css")) backup("style.css");
-if (fs.existsSync(origCss)) {
-  const cssSrc    = fs.readFileSync(origCss, "utf8");
-  const cssResult = new CleanCSS({ level: 2 }).minify(cssSrc);
-  fs.writeFileSync("style.css", cssResult.styles, "utf8");
-  console.log(`   style.css: ${(Buffer.byteLength(cssSrc)/1024).toFixed(1)} KB → ${kb("style.css")}`);
+const cssFiles = ["style.css", "pages.css"];
+
+for (const file of cssFiles) {
+  const origCss = path.join(ORIG_DIR, file);
+  if (!fs.existsSync(origCss) && fs.existsSync(file)) backup(file);
+  if (fs.existsSync(origCss)) {
+    const cssSrc    = fs.readFileSync(origCss, "utf8");
+    const cssResult = new CleanCSS({ level: 2 }).minify(cssSrc);
+    fs.writeFileSync(file, cssResult.styles, "utf8");
+    console.log(`   ${file}: ${(Buffer.byteLength(cssSrc)/1024).toFixed(1)} KB → ${kb(file)}`);
+  }
 }
+
 // ══════════════════════════════════════════════════════════════
 //  3. HTML — минификация
 // ══════════════════════════════════════════════════════════════
