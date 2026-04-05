@@ -3,26 +3,6 @@
   Files: index.html / style.css / script.js
 */
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
-
-import { getDatabase, ref, runTransaction, onValue, set, push } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
-
-const firebaseConfig = {
-  databaseURL: "https://cerxovl-github-io-default-rtdb.europe-west1.firebasedatabase.app/"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-// Глобальные переменные для доступа из других частей скрипта
-window.db = db;
-window.ref = ref;
-window.set = set;
-window.push = push;
-window.runTransaction = runTransaction;
-window.onValue = onValue;
-
-
 (() => {
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));

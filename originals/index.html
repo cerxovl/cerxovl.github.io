@@ -19,7 +19,8 @@
   <meta name="twitter:image" content="https://cerxovl.github.io/cover.jpg" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="style.css?v=2.25" />
+  <link rel="stylesheet" href="style.css?v=2.30" />
+
 
 </head>
 <body>
@@ -373,8 +374,30 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
+  <!-- Firebase Bridge -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
+    import { getDatabase, ref, runTransaction, onValue, set, push } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
 
-  <script src="script.js?v=2.25"></script>
+    const firebaseConfig = {
+      databaseURL: "https://cerxovl-github-io-default-rtdb.europe-west1.firebasedatabase.app/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Глобальный доступ для основного скрипта
+    window.db = db;
+    window.ref = ref;
+    window.set = set;
+    window.push = push;
+    window.runTransaction = runTransaction;
+    window.onValue = onValue;
+    window.firebaseReady = true;
+  </script>
+
+  <script src="script.js?v=2.30"></script>
+
 
 </body>
 </html>

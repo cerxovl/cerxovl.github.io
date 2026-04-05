@@ -39,29 +39,30 @@ const jsResult = JavaScriptObfuscator.obfuscate(jsSrc, {
   compact: true,
   target: "browser",
   controlFlowFlattening: true,
-  controlFlowFlatteningThreshold: 1,
+  controlFlowFlatteningThreshold: 0.5, // 50% вместо 100%
   deadCodeInjection: true,
-  deadCodeInjectionThreshold: 0.4,
-  numbersToExpressions: true,
+  deadCodeInjectionThreshold: 0.1, // Меньше мусорного кода
+  numbersToExpressions: false, // Выключаем сложные вычисления
   transformObjectKeys: true,
   stringArray: true,
-  stringArrayEncoding: ["rc4", "base64"],
-  stringArrayThreshold: 1,
-  stringArrayWrappersCount: 5,
+  stringArrayEncoding: ["base64"], // Упрощаем кодировку
+  stringArrayThreshold: 0.75,
+  stringArrayWrappersCount: 1,
   stringArrayWrappersType: "function",
-  stringArrayWrappersParametersMaxCount: 5,
+  stringArrayWrappersParametersMaxCount: 2,
   rotateStringArray: true,
   shuffleStringArray: true,
   splitStrings: true,
-  splitStringsChunkLength: 4,
+  splitStringsChunkLength: 10,
   identifierNamesGenerator: "mangled-shuffled",
   renameGlobals: false,
   renameProperties: false,
-  debugProtection: true,
-  debugProtectionInterval: 4000,
+  debugProtection: false, // ВЫКЛЮЧАЕМ ФРИЗЫ
+  debugProtectionInterval: 0,
   disableConsoleOutput: true,
-  selfDefending: true,
+  selfDefending: false,
   unicodeEscapeSequence: false,
+
 });
 
 fs.writeFileSync("script.js", jsResult.getObfuscatedCode(), "utf8");
