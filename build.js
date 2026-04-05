@@ -39,13 +39,13 @@ const jsResult = JavaScriptObfuscator.obfuscate(jsSrc, {
   compact: true,
   target: "browser",
   controlFlowFlattening: true,
-  controlFlowFlatteningThreshold: 0.5, // 50% вместо 100%
-  deadCodeInjection: true,
-  deadCodeInjectionThreshold: 0.1, // Меньше мусорного кода
-  numbersToExpressions: false, // Выключаем сложные вычисления
+  controlFlowFlatteningThreshold: 0.15, // Золотая середина: защита есть, лагов нет
+  deadCodeInjection: false, // ГЛАВНЫЙ ВИНОВНИК ТОРМОЗОВ НА ПК - ВЫКЛЮЧАЕМ
+  deadCodeInjectionThreshold: 0,
+  numbersToExpressions: false,
   transformObjectKeys: true,
   stringArray: true,
-  stringArrayEncoding: ["base64"], // Упрощаем кодировку
+  stringArrayEncoding: ["base64"],
   stringArrayThreshold: 0.75,
   stringArrayWrappersCount: 1,
   stringArrayWrappersType: "function",
@@ -57,11 +57,12 @@ const jsResult = JavaScriptObfuscator.obfuscate(jsSrc, {
   identifierNamesGenerator: "mangled-shuffled",
   renameGlobals: false,
   renameProperties: false,
-  debugProtection: false, // ВЫКЛЮЧАЕМ ФРИЗЫ
+  debugProtection: false, // ВТОРОЙ ВИНОВНИК ТОРМОЗОВ - ВЫКЛЮЧАЕМ
   debugProtectionInterval: 0,
   disableConsoleOutput: true,
   selfDefending: false,
   unicodeEscapeSequence: false,
+
 
 });
 

@@ -3197,13 +3197,14 @@ body.content-hidden .wrap:not(.showing) {
 /* Изображение профиля */
 .tg-profile-img {
   width: 100%;
-  height: 100%;
+  height: calc(100% + 40px); /* Делаем картинку чуть выше для честного среза */
+  margin-top: -30px; /* Смещаем вверх, пряча время/зарядку/челку */
   object-fit: cover;
   object-position: center;
   border-radius: 34px;
-  /* Прячем время/зарядку/челку путем легкого увеличения и сдвига вверх */
-  transform: scale(1.12) translateY(-4%);
+  transform: none; /* Убираем упоротый зум */
 }
+
 
 
 /* Анимация 3D вращения */
