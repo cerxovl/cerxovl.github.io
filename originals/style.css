@@ -23,9 +23,26 @@
 
   --shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
   --radius: 22px;
-
   --ease: cubic-bezier(.2, .8, .2, 1);
 }
+
+/* ── Reveal Animations ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px) scale(0.98);
+  filter: blur(8px);
+  transition: opacity 0.8s var(--ease), 
+              transform 0.8s var(--ease), 
+              filter 0.8s var(--ease);
+  will-change: opacity, transform, filter;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
 
 :root[data-theme="ultra"] {
   --bg: #05050a;
@@ -3087,9 +3104,9 @@ body.content-hidden .wrap:not(.showing) {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Добавим отступ снизу на мобилках, если переносится */
-  margin: 20px 0;
+  margin: 10px 0 30px; /* Отступ больше снизу на мобилках */
 }
+
 
 @media (min-width: 1300px) {
   .phone-container-absolute {
@@ -3195,7 +3212,35 @@ body.content-hidden .wrap:not(.showing) {
 
 @media (max-width: 900px) {
   .phone-mockup {
-    width: 280px;
-    height: 560px;
+    width: 260px;
+    height: 520px;
+    border-radius: 38px;
+    box-shadow: 
+      0 0 0 10px #222,
+      0 12px 40px rgba(0, 0, 0, 0.5);
+  }
+  .phone-screen, .tg-profile-img {
+    border-radius: 28px;
   }
 }
+
+@media (max-width: 480px) {
+  .phone-mockup {
+    width: 220px;
+    height: 440px;
+    border-radius: 32px;
+  }
+  .phone-screen, .tg-profile-img {
+    border-radius: 24px;
+  }
+  .phone-notch {
+    width: 100px;
+    height: 24px;
+  }
+  /* Дополнительный фикс для Chrome Mobile */
+  .wrap {
+    padding-top: 90px;
+    overflow-x: hidden;
+  }
+}
+
