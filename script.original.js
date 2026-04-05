@@ -842,7 +842,11 @@
       isPlaying = true;
       updateMusicUI();
       showMedia();
-      if (media) media.classList.add("is-playing");
+      if (media) {
+        media.classList.add("is-playing");
+        media.classList.add("media--playing");
+      }
+
       setPlayButtonState(true);
       updateProgressUI();
       startRafWhilePlaying();
@@ -858,7 +862,11 @@
 
       isPlaying = false;
       updateMusicUI();
-      if (media) media.classList.remove("is-playing");
+      if (media) {
+        media.classList.remove("is-playing");
+        media.classList.remove("media--playing");
+      }
+
       setPlayButtonState(false);
       updateProgressUI();
       stopRaf();
@@ -875,7 +883,11 @@
 
       isPlaying = false;
       updateMusicUI();
-      if (media) media.classList.remove("is-playing");
+      if (media) {
+        media.classList.remove("is-playing");
+        media.classList.remove("media--playing");
+      }
+
       setPlayButtonState(false);
       music.currentTime = 0;
       setProgressByRatio(0);

@@ -1792,13 +1792,27 @@ body:not(.fpage-active) .media {
 }
 
 .media__progress {
-  height: 12px;
-  border-radius: 999px;
+  height: 4px;
   background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  margin-top: 10px;
   position: relative;
   overflow: hidden;
-  cursor: none;
+  opacity: 0;           /* Скрываем по умолчанию */
+  max-height: 0;        /* Прячем высоту */
+  transform: scaleY(0); /* Дополнительно сжимаем */
+  transition: opacity 0.5s var(--ease), 
+              max-height 0.5s var(--ease), 
+              transform 0.5s var(--ease),
+              margin-top 0.5s var(--ease);
+  will-change: opacity, max-height, transform;
+}
+
+.media--playing .media__progress {
+  opacity: 1;
+  max-height: 10px;
+  transform: scaleY(1);
+  margin-top: 14px;
 }
 
 .media__progressFill {
