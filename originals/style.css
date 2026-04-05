@@ -3201,7 +3201,10 @@ body.content-hidden .wrap:not(.showing) {
   object-fit: cover;
   object-position: center;
   border-radius: 34px;
+  /* Прячем время/зарядку/челку путем легкого увеличения и сдвига вверх */
+  transform: scale(1.12) translateY(-4%);
 }
+
 
 /* Анимация 3D вращения */
 @keyframes phoneRotate {
